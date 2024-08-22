@@ -1,0 +1,166 @@
+* {
+    color: white;
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    line-height: 1.5;
+    font-size: 16px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.title {
+    font-size: 80px;
+    font-weight: 900;
+    padding-top: 50px;
+    text-align: center;
+    font-family: ubuntu;
+    background: linear-gradient(270deg, #DA7C25 10%, #B923E1 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.title hr {
+    width: 20%;
+    height: 3px;
+    margin-left: 40%;
+    margin-top: -10px;
+    text-align: center;
+    border: none;
+    background: linear-gradient(270deg, #DA7C25 10%, #B923E1 100%);
+}
+
+
+/*  ==============================================  Signin Start  ==============================================  */
+
+.signin {
+    background-color: black;
+    padding-left: 20%;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.signin .signin-content {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    width: 80%;
+    gap: 50px;
+    border: 2px solid white;
+    text-align: center;
+    border-radius: 10px;
+    transition: 0.7s;
+    background-color: #222222;
+    box-shadow: 10px 10px 20px white;
+}
+
+.signin .signin-content:hover {
+    transform: scale(1.06);
+    border: 2px solid #ff00ff;
+}
+
+.signin .signin-content h1 {
+    font-size: 70px;
+    background: linear-gradient(267deg, #DA7C25 0.36%, #B923E1 102.06%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.signin .signin-content .validation {
+    font-size: 30px;
+    text-align: start;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+}
+
+.signin .signin-content .validation label {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.signin .signin-content .validation input {
+    width: 90%;
+    padding: 20px;
+    border: none;
+    font-size: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    color: #222222;
+}
+
+.signin .signin-content button {
+    padding: 20px 40px;
+    border-radius: 50px;
+    background: linear-gradient(267deg, #DA7C25 0.36%, #B923E1 102.06%);
+    font-size: 22px;
+    cursor: pointer;
+    border: 0;
+    transition: 0.7s;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.signin .signin-content button:hover {
+    transform: scale(1.2);
+}
+
+.signin .signin-content .validation a {
+    background: linear-gradient(267deg, #DA7C25 0.36%, #B923E1 102.06%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.signin .signin-content .validation a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+.alert-message {
+    display: flex;
+}
+
+.alert-message h5 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.alert-container .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.alert-error {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+
+/*  ==============================================  Signin End  ==============================================  */
+
+
+/*  ==============================================  Home Start  ==============================================  */
+
+.home {
+    background-color: black;
+    color: white;
+}
+
+
+/*  ==============================================  Home End  ==============================================  */

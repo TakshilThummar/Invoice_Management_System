@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html>
+
+<!--  =======================================  Head Start  =======================================  -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <title>Billing Management System</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'CSS/styles.css' %}">
+
+    <link rel="icon" href="{% static 'Images/logo.png' %}">
+
+</head>
+
+<!--  =======================================  Head End  =======================================  -->
+
+<!--  =======================================  Body Start  =======================================  -->
+
+<body>
+
+    <!--  =======================================  Sign In/Sign Up Start  =======================================  -->
+
+    <section>
+
+        <div class="signin">
+
+            {% if messages %}
+            <div id="messages" data-messages="{% for message in messages %}{{ message }}{% if not forloop.last %}|{% endif %}{% endfor %}"></div>
+            {% endif %}
+
+            <div class="signin-content">
+
+                <div class="signin-form" id="sign-in-form">
+                    <form action="{% url 'sign_in' %}" method="post">
+
+                        {% csrf_token %}
+
+                        <h1>Sign In</h1>
+
+                        <div class="validation">
+                            <label for="name">Email/Name/Phone Number : </label>
+                            <input type="text" id="username" name="username" placeholder="Enter Your Email/Name/Phone Number" required>
+                        </div>
+
+                        <div class="validation">
+                            <label for="password">Password : </label>
+                            <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                        </div>
+
+                        <div class="validation">
+                            <button type="submit" onclick="signIn()">Sign In</button>
+                        </div>
+
+                        <div class="validation">
+                            <label for="text">Create a New Account ? <a href="#" onclick="showSignUpForm()">Sign Up</a></label>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="signin-form hidden" id="sign-up-form">
+
+                    <form name="register" method="post">
+
+                        <form action="{% url 'sign_up' %} " method="post " id="contact-form ">
+
+                            {% csrf_token %}
+
+                            <h1>Sign Up</h1>
+
+                            <div class="validation ">
+                                <label for="name ">Name : </label>
+                                <input type="text " id="username " name="username " placeholder="Enter Your Name " required>
+                            </div>
+
+                            <div class="validation ">
+                                <label for="name ">Phone Number : </label>
+                                <input type="text " id="number " name="number " placeholder="Enter Your Phone Number " required>
+                            </div>
+
+                            <div class="validation ">
+                                <label for="name ">Email : </label>
+                                <input type="email " id="email " name="email " placeholder="Enter Your Email " required>
+                            </div>
+
+                            <div class="validation ">
+                                <label for="password ">Password : </label>
+                                <input type="password " id="password " name="password " placeholder="Enter Your Password " required>
+                            </div>
+
+                            <div class="validation ">
+                                <label for="password ">Confirm Password : </label>
+                                <input type="password " id="con-password " name="con-password " placeholder="Enter Confirm Password " required>
+                            </div>
+
+                            <div class="validation ">
+                                <button type="submit " onclick="signUp() ">Sign Up</button>
+                            </div>
+
+                            <div class="validation ">
+                                <label for="text ">Already Have an Account ? <a href="# " onclick="showSignInForm() ">Sign In</a></label>
+                            </div>
+
+                        </form>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--  =======================================  Sign In/Sign Up End  =======================================  -->
+
+    <script src="{% static 'JS/script.js' %} "></script>
+
+</body>
+
+<!--  =======================================  Body End  =======================================  -->
+
+</html>

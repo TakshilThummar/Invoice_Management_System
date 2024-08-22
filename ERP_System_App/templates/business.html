@@ -1,0 +1,624 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillBoost Invoice</title>
+    <link rel="stylesheet" href="{% static 'CSS/style-1.css' %}">
+
+    <link rel="icon" href="{% static 'Images/logo.png' %}">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <section>
+        <header>
+            <div class="navbar">
+                <div class="aside">
+                    <div class="logo">
+                        <a href="#"><img src="{% static 'Images/logo.png' %}" alt=""></a>
+                    </div>
+                    <div class="navi">
+                        <ul>
+                            <li><a href="/home">Dashboard</a></li>
+
+                            <li><a href="/bill_page">Bills</a></li>
+
+                            <li><a href="/business">Customers</a></li>
+
+                            <li><a href="/profile">
+                                {% if user.is_authenticated %}
+                                    <span class="username">{{ user.username }}</span>
+                                {% else %}
+                                    <span class="username">Guest</span>
+                                {% endif %}</a>
+                            </li>
+
+                            <li>
+                                {% if not request.user.is_authenticated %}
+                                <h1><a href="/sign_out">Sign Out</a></h1>
+                                {% else %}
+                                <h1><a href="/sign_out">Sign Out</a></h1>
+                                {% endif %}
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="main-content">
+                <div class="customer">
+                    <div class="customer-section">
+                        <form method="post" action="{% url 'delete_customers' %}" onsubmit="return confirmDelete();">
+                            <div class="title" bill_search>
+                                <h1>Customer Records</h1>
+                            </div>
+
+                            <div class="alert-messages">
+                                {% if messages %}
+                                <div class="container mt-3">
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            {% csrf_token %}
+                            <div class="customer-head">
+                                <input type="text" id="search_customer_id" placeholder="Enter Customer ID For Search" onkeyup="filterTable()">
+                                <input type="text" id="search_customer_name" placeholder="Enter Customer Name For Search" onkeyup="filterTable()">
+                                <input type="date" id="search_date_of_birth" placeholder="Enter Date For Search" onkeyup="filterTable()">
+                                <input type="text" id="search_customer_number" placeholder="Enter Customer Number For Search" onkeyup="filterTable()">
+
+                                <button type="submit" class="btn">Delete Selected</button>
+                                <button type="button" class="btn" onclick="window.location.href='{% url 'generate_customer' %}'">Add Customers</button>
+                            </div>
+                            <hr>
+                            <div class="customer-search">
+                                <div class="customer-search-table" id="customerTable">
+                                    <div class="customer-search-table-header">
+                                        <div class="customer-search-table-header-details">
+                                            <h2>Select Records For Delete</h2>
+                                            <h2>Customer ID</h2>
+                                            <h2>Customer Name</h2>
+                                            <h2>Customer Number</h2>
+                                            <h2>Customer Address</h2>
+                                            <h2>Date Of Birth</h2>
+                                            <h2>Age</h2>
+                                            <h2>Action</h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="customer-search-table-raw" id="customerTableBody">
+
+                                        {% if customers %} {% for customer in customers %}
+                                        <div class="customer-search-table-raw-details">
+                                            <h5><input type="checkbox" class="check" name="customer_delete" value="{{ customer.id }}" style="width: 20px; height: 20px; align-items: center;"></h5>
+                                            <h5>{{ customer.id }}</h5>
+                                            <h5>{{ customer.customer_name }}</h5>
+                                            <h5>{{ customer.customer_number }}</h5>
+                                            <h5>{{ customer.customer_address }}</h5>
+                                            <h5 class="hidden">{{ customer.email }}</h5>
+                                            <h5>{{ customer.date_of_birth }}</h5>
+                                            <h5>{{ customer.age }}</h5>
+                                            <h5 class="hidden">{{ customer.gender }}</h5>
+                                            <h5>
+                                                <a href="" onclick="showFallingPage()">
+                                                    <a href="#" onclick="editRecord('{{ customer.id }}', '{{ customer.customer_id }}', '{{ customer.customer_name }}', '{{ customer.customer_number }}', '{{ customer.date_of_birth }}', '{{ customer.customer_address }}', '{{ customer.email }}', '{{ customer.age }}', '{{ customer.gender }}')">
+                                                        <img src="{% static 'Images/edit.png' %}" alt="Edit">
+                                                    </a>
+                                                </a>
+                                            </h5>
+                                        </div>
+
+                                        {% endfor %} {% else %}
+
+                                        <div>
+                                            <h1 style="font-size: 30px; color: orangered;">No Customer Available...</h1>
+                                        </div>
+
+                                        {% endif %}
+
+                                        <div id="messageContainer" class="alert alert-warning" style="display: none; margin-top: 10px;">
+                                            <h1 style="font-size: 30px; color: orangered;">Customer Record Not Found...</h1>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <div id="message" class="message"></div>
+                    <div id="error" class="message error" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer">
+            </div>
+        </footer>
+
+        <!-- Edit Record Modal -->
+
+        <div id="editModal" class="edit-customer-records" onload="setDefaultDate()">
+
+            <div class="edit-customer">
+
+                <div class="title" bill_search>
+                    <h1>Edit Customer Record</h1>
+                    <button type="button" class="close-btn" onclick="closeModal()" style="background: white; height: 50px; width: 50px; margin-top: 70px; border: none; cursor: pointer;"><img src="{% static 'Images/close.png' %}" alt=""></button>
+                </div>
+
+
+                <form id="editForm" method="POST" action="{% url 'edit_customer' %}">
+
+                    {% csrf_token %}
+
+                    <div class="edit-customer-table">
+
+                        <div class="edit-customer-details">
+
+                            <div class="customer-details">
+
+                                <div class="form-group">
+                                    <label for="customer_id">Customer ID : </label>
+                                    <input type="text" id="edit_customer_id" name="id">
+                                    <h3>
+                                        <div class="error-meesage" id="customer_id_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customer_name">Customer Name :</label>
+                                    <input type="text" id="edit_customer_name" name="customer_name" placeholder="Enter Customer Name" oninput="validateCharacterWithSpaces(this)" required>
+                                    <h3>
+                                        <div class="error-meesage" id="customer_name_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customer_number">Customer Number :</label>
+
+                                    <div class="country-code">
+                                        <select id="country_code" onchange="updateFlag(this)">
+                                        <option value="+91" data-flag="https://flagcdn.com/w20/in.png">+91</option>
+                                    </select>
+                                        <img id="country_flag" src="{% static 'Images/india.webp' %}">
+                                        <input type="text" id="edit_customer_number" name="customer_number" oninput="validatePhoneNumber(this)" placeholder="Enter Customer phone number" required>
+                                    </div>
+                                    <h3>
+                                        <div class="error-message" id="customer_number_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customer_address">Customer Address :</label>
+                                    <input type="text" id="edit_customer_address" name="customer_address" placeholder="Enter Customer Address" oninput="validateValue(this)" required>
+                                    <h3>
+                                        <div class="error-message" id="address_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email :</label>
+                                    <input type="email" id="edit_email" name="email" placeholder="Enter Email" oninput="validateValue(this)" required>
+                                    <h3>
+                                        <div class="error-message" id="email_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date_of_birth"> Date Of Birth : </label>
+                                    <input type="date" id="edit_date_of_birth" name="date_of_birth" oninput="calculateAge()" required>
+                                    <h3>
+                                        <div class="error-message" id="date_of_birth_name_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="age"> Age :</label>
+                                    <input type="text" id="edit_age" name="age" readonly>
+                                    <h3>
+                                        <div class="error-message" id="age_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bill_status">Gender :</label>
+                                    <div class="status">
+                                        <select id="edit_gender" name="gender">
+                                        <li><option value="Male">Male</option></li>
+                                        <li><option value="Female">Female</option></li>
+                                        <li><option value="Other">Other</option></li>
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div id="alert-message" class="alert" style="display: none;">Number fields can only contain numeric values.</div>
+
+                            </div>
+
+
+                            <div class="close">
+                                <button type="submit">Save</button>
+                                <button type="button" onclick="closeModal()">Cancel</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+
+    <script src="{% static 'JS/script.js' %}"></script>
+
+    <script>
+        function editRecord(id, customerID, customerName, customerNumber, customerAddress, email, dateOfBirth, age, gender) {
+
+            let formattedDateOfBirth = '';
+            if (dateOfBirth) {
+                const date = new Date(customerAddress);
+                if (!isNaN(date.getTime())) {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+                    const day = String(date.getDate()).padStart(2, '0'); // Get the day of the month
+                    formattedDateOfBirth = `${year}-${month}-${day}`;
+                }
+            }
+
+
+            console.log(id, customerID, customerName, customerNumber, customerAddress, email, age, gender, formattedDateOfBirth)
+                // Set values in the form fields
+            document.getElementById('edit_customer_id').value = id;
+            document.getElementById('edit_customer_name').value = customerName;
+            document.getElementById('edit_customer_number').value = customerNumber;
+            document.getElementById('edit_customer_address').value = email;
+            document.getElementById('edit_email').value = dateOfBirth;
+            document.getElementById('edit_date_of_birth').value = formattedDateOfBirth;
+            document.getElementById('edit_age').value = age;
+            document.getElementById('edit_gender').value = gender;
+
+            // Open the modal
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+
+
+        /*function downloadPDF(customerID, customerName, customerNumber, customerAddress, dateOfBirth, email, gender) {
+            var form = document.createElement('form');
+            form.method = 'GET';
+            form.action = '/generate_pdf/';
+
+            var inputs = [{
+                name: 'bill_number',
+                value: billNumber
+            }, {
+                name: 'customer_name',
+                value: customerName
+            }, {
+                name: 'customer_number',
+                value: customerNumber
+            }, {
+                name: 'date',
+                value: date
+            }, {
+                name: 'product_name',
+                value: productName
+            }, {
+                name: 'quantity',
+                value: quantity
+            }, {
+                name: 'price',
+                value: price
+            }, {
+                name: 'tax',
+                value: tax
+            }, {
+                name: 'total',
+                value: total
+            }];
+
+            inputs.forEach(function(input) {
+                var hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = input.name;
+                hiddenInput.value = input.value;
+                form.appendChild(hiddenInput);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function sendWhatsApp(customerNumber, billNumber, total) {
+            var message = encodeURIComponent(`Hello! Here is your bill information:\n\nBill Number: ${billNumber}\nTotal Amount: ₹${total}`);
+            var phoneNumber = encodeURIComponent(customerNumber);
+            var url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+            window.open(url, '_blank');
+        }*/
+
+        function showFallingPage() {
+            var fallingPage = document.getElementById('fallingPage');
+            fallingPage.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotals();
+        });
+
+        var customerCount = document.getElementById('customerTableBody').rows.length;
+        console.log(`Number of Customers: ${customerCount}`);
+
+
+        function speakMessage(message) {
+            const msg = new SpeechSynthesisUtterance(message);
+            // Optionally, you can set the voice to a female voice if available
+            const voices = window.speechSynthesis.getVoices();
+            const femaleVoice = voices.find(voice => voice.name.includes('Female')) || voices[0];
+            msg.voice = femaleVoice;
+            window.speechSynthesis.speak(msg);
+        }
+
+        /*function validateNumber(field) {
+            const errorElement = document.getElementById(field.id + '_error');
+            const value = field.value;
+
+            if (/[^0-9]/.test(field.value)) {
+                errorElement.textContent = "Only Numbers Are Allowed...";
+                errorElement.style.display = 'block';
+            } else if (field.value === 'quantity' || field.value === 'price') {
+                // For quantity and price, check for 0
+                if (value == 0 || value === '') {
+                    errorElement.textContent = "0 Or Blank Space are not allowed.";
+                    errorElement.style.display = 'block';
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }*/
+
+        function validateNumber(field) {
+
+            let value = field.value;
+            let errorElement;
+
+            if (field.id === 'edit_price') {
+                errorElement = document.getElementById('price_error');
+            } else if (field.id === 'edit_quantity') {
+                errorElement = document.getElementById('quantity_error');
+            }
+
+            if (isNaN(value) || value.trim() === '' || parseFloat(value) <= 0) {
+                errorElement.textContent = "0, Characters And Space Are Not Allowed...";
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        function validateCharacterWithSpaces(field) {
+
+            const errorElement = document.getElementById('customer_name_error');
+
+            let value = field.value;
+            let regex = /^[A-Za-z\s]+$/;
+            if (!regex.test(value)) {
+                errorElement.textContent = "Numbers And Special Characters Are Not Allowed...";
+                field.nextElementSibling.style.display = 'block';
+            } else {
+                field.nextElementSibling.style.display = 'none';
+            }
+        }
+
+        function validateValue(field) {
+            const errorElement = document.getElementById('error');
+            errorElement.style.display = 'none'; // All values are allowed for product name
+        }
+
+        function updateFlag(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const flagUrl = selectedOption.getAttribute('data-flag');
+            document.getElementById('country_flag').src = flagUrl;
+        }
+
+        function validatePhoneNumber(field) {
+            const errorElement = document.getElementById('customer_number_error');
+            const countryCode = document.getElementById('country_code').value;
+            let regex;
+
+            if (countryCode === '+91') {
+                regex = /^[0-9]{10}$/;
+            } else {
+                errorElement.textContent = "Unsupported Country Code";
+                errorElement.style.display = 'block';
+                return false;
+            }
+
+            if (!regex.test(field.value)) {
+                errorElement.textContent = "Invalid Phone Number For The Selected Country...";
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateForm() {
+            const fields = ['customer_id', 'customer_name', 'customer_number', 'customer_address', 'gender', 'age', 'date_of_birth', 'email'];
+            let valid = true;
+
+            fields.forEach(function(field) {
+                const element = document.getElementById(field);
+                const errorElement = document.getElementById(field + '_error');
+
+                if (element.value.trim() === "") {
+                    errorElement.textContent = "Blank Space is Not Allowed...";
+                    errorElement.style.display = 'block';
+                    valid = false;
+                } else if (errorElement.style.display === 'block') {
+                    valid = false;
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            });
+
+            if (valid) {
+                alert("Record Updated Successfully! Thank You...");
+                speakMessage("Record Updated Successfully! Thank You...")
+                    // Optionally, submit the form data here.
+            } else {
+                //alert("Please correct the errors and try again.");
+                speakMessage("Please Correct The Errors And Try Again.")
+            }
+        }
+
+        function calculateAge() {
+            const dobElement = document.getElementById('edit_date_of_birth');
+            const ageElement = document.getElementById('edit_age');
+
+            const dobValue = dobElement.value;
+            if (dobValue) {
+                const dob = new Date(dobValue);
+                const today = new Date();
+
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDifference = today.getMonth() - dob.getMonth();
+                const dayDifference = today.getDate() - dob.getDate();
+
+                // Adjust age if the current date is before the birthday in the current year
+                if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                    age--;
+                }
+
+                ageElement.value = age;
+            } else {
+                ageElement.value = '';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show';
+            setTimeout(() => {
+                toast.className = toast.className.replace('show', '');
+            }, 3000);
+        }
+
+        function filterTable() {
+            // Get the filter values
+            let customerIdInput = document.getElementById("search_customer_id").value.toUpperCase();
+            let customerNameInput = document.getElementById("search_customer_name").value.toUpperCase();
+            let dateOfBirthInput = document.getElementById("search_date_of_birth").value;
+            let customerNumberInput = document.getElementById("search_customer_number").value.toUpperCase();
+
+            // Get the table and its rows
+            let table = document.getElementById("customerTable");
+            let rows = table.getElementsByClassName("customer-search-table-raw-details");
+            let messageContainer = document.getElementById("messageContainer");
+
+            let foundMatch = false;
+
+            for (let i = 0; i < rows.length; i++) {
+                let row = rows[i];
+                let tdCustomerId = row.getElementsByTagName("h5")[1];
+                let tdCustomerName = row.getElementsByTagName("h5")[2];
+                let tdDateOfBirth = row.getElementsByTagName("h5")[5];
+                let tdCustomerNumber = row.getElementsByTagName("h5")[3];
+
+                // Get text content for each field
+                let customerIdValue = tdCustomerId ? tdCustomerId.textContent || tdCustomerId.innerText : "";
+                let customerNameValue = tdCustomerName ? tdCustomerName.textContent || tdCustomerName.innerText : "";
+                let dateOfBirthValue = tdDateOfBirth ? tdDateOfBirth.textContent || tdDateOfBirth.innerText : "";
+                let customerNumberValue = tdCustomerNumber ? tdCustomerNumber.textContent || tdCustomerNumber.innerText : "";
+
+                // Parse date values for comparison
+                let parsedDateOfBirth = new Date(dateOfBirthValue);
+                let parsedDateOfBirthInput = new Date(dateOfBirthInput);
+
+                // Check if row matches filter criteria
+                let matchesCustomerId = customerIdValue.toUpperCase().indexOf(customerIdInput) > -1;
+                let matchesCustomerName = customerNameValue.toUpperCase().indexOf(customerNameInput) > -1;
+                let matchesDateOfBirth = !dateOfBirthInput || (parsedDateOfBirthInput.toDateString() === parsedDateOfBirth.toDateString());
+                let matchesCustomerNumber = customerNumberValue.toUpperCase().indexOf(customerNumberInput) > -1;
+
+                if (matchesCustomerId && matchesCustomerName && matchesDateOfBirth && matchesCustomerNumber) {
+                    row.style.display = "";
+                    foundMatch = true;
+                } else {
+                    row.style.display = "none";
+                }
+            }
+
+            // Display or hide the message based on whether any records were found
+            if (foundMatch) {
+                messageContainer.style.display = "none";
+            } else {
+                messageContainer.style.display = "block";
+            }
+        }
+
+
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this record?");
+        }
+
+        function displaySuccessMessage() {
+            const message = document.createElement('div');
+            message.textContent = "Records Deleted Successfully...";
+            message.style.position = "fixed";
+            message.style.top = "10px";
+            message.style.right = "10px";
+            message.style.backgroundColor = "#f5a623";
+            message.style.color = "#fff";
+            message.style.padding = "15px";
+            message.style.borderRadius = "5px";
+            message.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+            message.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+            message.style.zIndex = "1000";
+            document.body.appendChild(message);
+
+            setTimeout(() => {
+                message.style.transition = "opacity 0.5s ease";
+                message.style.opacity = "0";
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 500);
+            }, 3000);
+        }
+    </script>
+
+</body>
+
+</html>

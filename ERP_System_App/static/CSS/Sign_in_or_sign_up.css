@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    max-height: 1000px;
+    background: black;
+}
+
+hr {
+    border: none;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: 1px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+
+/*  ==============================================  Sign In Or Sign Up End  ==============================================  */
+
+section {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+section::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#000, skyblue, #000);
+    animation: animate 5s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+section span {
+    width: calc(6.25vw - 2px);
+    height: calc(6.25vw - 2px);
+    background: #181818;
+    z-index: 2;
+    transition: 1.5s;
+}
+
+section span:hover {
+    background: #87ceeb;
+    transition: 0s;
+}
+
+.signin {
+    position: absolute;
+    background: #222222;
+    color: white;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-radius: 4px;
+    border-radius: 10px;
+    transition: 0.7s;
+    background-image: url('../Images/bg_image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.signin:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px white;
+}
+
+.signin .signin-content h1 {
+    font-size: 70px;
+    background: linear-gradient(267deg, #DA7C25 0.36%, #B923E1 102.06%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 50px;
+}
+
+.signin .signin-content .validation {
+    font-size: 30px;
+    text-align: start;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+}
+
+.signin .signin-content .validation label {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.signin .signin-content .validation input {
+    width: 90%;
+    padding: 20px;
+    border: none;
+    font-size: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    color: #222222;
+}
+
+.signin .signin-content button {
+    padding: 20px 40px;
+    border-radius: 50px;
+    background: linear-gradient(267deg, #DA7C25 0.36%, #B923E1 102.06%);
+    font-size: 22px;
+    cursor: pointer;
+    border: 0;
+    transition: 0.7s;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.signin .signin-content button:hover {
+    transform: scale(1.2);
+}
+
+.password-toggle {
+    position: relative;
+}
+
+.eye-icon-signin {
+    position: absolute;
+    right: 100px;
+    top: 70px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.eye-icon-signin:hover {
+    color: black;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 80px;
+    top: 70px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.signin .signin-content .links {
+    font-size: 30px;
+    font-weight: bolder;
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+}
+
+.signin .signin-content .links a {
+    background: linear-gradient(267deg, #DA7C25 0.36%, #B923E1 102.06%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.signin .signin-content .links a:hover {
+    text-decoration: underline;
+}
+
+
+/*  ==============================================  Sign In Or Sign Up End  ==============================================  */
+
+.or {
+    display: inline-block;
+    width: 100%;
+}
+
+.or-content {
+    display: flex;
+}
+
+.or h3 {
+    font-size: 30px;
+    padding-top: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.or .or-content hr {
+    width: 100%;
+}
+
+.or .left {
+    border: none;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: 1px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.social-login h3 {
+    font-size: 30px;
+    text-align: center;
+}
+
+.social-login .social-accounts {
+    text-decoration: none;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.social-login .social-accounts a img {
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    margin-left: 40px;
+    background-color: white;
+    border-radius: 10px;
+    transition: 0.7s;
+}
+
+.social-login .social-accounts a img:hover {
+    transform: scale(1.2);
+}

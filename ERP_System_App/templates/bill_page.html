@@ -1,0 +1,599 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillBoost Invoice</title>
+    <link rel="stylesheet" href="{% static 'CSS/style-1.css' %}">
+    <link rel="icon" href="{% static 'Images/logo.png' %}">
+</head>
+
+<body>
+
+    <section>
+        <header>
+            <div class="navbar">
+                <div class="aside">
+                    <div class="logo">
+                        <a href="#"><img src="{% static 'Images/logo.png' %}" alt=""></a>
+                    </div>
+                    <div class="navi">
+                        <ul>
+                            <li><a href="/home">Dashboard</a></li>
+
+                            <li><a href="/bill_page">Bills</a></li>
+
+                            <li><a href="/business">Customers</a></li>
+
+                            <li><a href="/profile">
+                                {% if user.is_authenticated %}
+                                    <span class="username">{{ user.username }}</span>
+                                {% else %}
+                                    <span class="username">Guest</span>
+                                {% endif %}</a>
+                            </li>
+
+                            <li>
+                                {% if not request.user.is_authenticated %}
+                                <h1><a href="/sign_out">Sign Out</a></h1>
+                                {% else %}
+                                <h1><a href="/sign_out">Sign Out</a></h1>
+                                {% endif %}
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="main-content">
+                <div class="bill">
+                    <div class="bill-section">
+                        <form method="post" action="{% url 'bill_page' %}">
+                            <div class="title" bill_search>
+                                <h1>Search Records</h1>
+                            </div>
+                            {% csrf_token %}
+                            <div class="bill-head">
+                                <input type="text" id="search_bill_number" placeholder="Enter Bill Number For Search" onkeyup="filterTable()">
+                                <input type="text" id="search_customer_name" placeholder="Enter Customer Name For Search" onkeyup="filterTable()">
+                                <input type="date" id="search_date" placeholder="Enter Date For Search" onkeyup="filterTable()">
+                                <input type="text" id="search_product_name" placeholder="Enter Product Name For Search" onkeyup="filterTable()">
+                                <button type="submit" class="btn">Delete Selected</button>
+                                <button type="button" class="btn" onclick="window.location.href='{% url 'generate_bill' %}'">Generate Bill</button>
+                            </div>
+                            <hr>
+                            <hr>
+                            <div class="bill-search">
+                                <div class="bill-search-table" id="billTable">
+                                    <div class="bill-search-table-header">
+                                        <div class="bill-search-table-header-details">
+                                            <h2>Select Records for Delete</h2>
+                                            <h2>Bill Number</h2>
+                                            <h2>Customer Name</h2>
+                                            <h2>Bill Status</h2>
+                                            <h2>Date</h2>
+                                            <h2>Product Name</h2>
+                                            <h2>Quantity</h2>
+                                            <!--<h2>Price In &#8377;</h2>
+                                            <h2>Tax In &#8377; (18%)</h2>-->
+                                            <h2>Total Amount In &#8377;</h2>
+                                            <h2>Action</h2>
+                                        </div>
+                                    </div>
+                                    <div class="bill-search-table-raw" id="billTableBody">
+                                        {% for bill in bills %}
+                                        <div class="bill-search-table-raw-details">
+                                            <h5><input type="checkbox" class="check" name="delete" value="{{ bill.id }}" style="width: 20px; height: 20px; align-items: center;"></h5>
+                                            <h5>{{ bill.id }}</h5>
+                                            <h5>{{ bill.customer_name }}</h5>
+                                            <h5>{{ bill.status }}</h5>
+                                            <h5>{{ bill.bill_date }}</h5>
+                                            <h5>{{ bill.product_name }}</h5>
+                                            <h5>{{ bill.quantity }}</h5>
+                                            <h5 class="hidden">&#8377; {{ bill.price }}</h5>
+                                            <h5 class="hidden">&#8377; {{ bill.tax }}</h5>
+                                            <h5>&#8377; {{ bill.total }}</h5>
+                                            <h5>
+                                                <a href="" onclick="showFallingPage()">
+                                                    <a href="#" onclick="editRecord('{{ bill.id }}', '{{ bill.bill_number }}', '{{ bill.customer_name }}', '{{ bill.customer_number }}', '{{ bill.bill_date }}', '{{ bill.product_name }}', '{{ bill.quantity }}', '{{ bill.price }}', '{{ bill.tax }}', '{{ bill.total }}', '{{ bill.status }}', '{{ bill.address}}')">
+                                                        <img src="{% static 'Images/edit.png' %}" alt="Edit">
+                                                    </a>
+                                                </a>
+                                                <a href="#" onclick="downloadPDF('{{ bill.bill_number }}', '{{ bill.customer_name }}', '{{ bill.customer_number }}', '{{ bill.bill_date }}', '{{ bill.product_name }}', '{{ bill.quantity }}', '{{ bill.price }}', '{{ bill.tax }}', '{{ bill.total }}')">
+                                                    <img src="{% static 'Images/download.png' %}" alt="Download">
+                                                </a>
+                                                <a href="#"><img src="{% static 'Images/wp.png' %}" alt="WhatsApp"></a>
+                                            </h5>
+                                        </div>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="10">No Bills Available.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="total-fields">
+                                <div class="form-group hidden">
+                                    <label for="total">Total Price :</label>
+                                    <input type="text" id="total_price" name="total_price" value="{{ total_price }}" placeholder="Please Enter Bills" oninput="validateNumber(this);" readonly>
+                                </div>
+
+                                <div class="form-group hidden">
+                                    <label for="total">Total Tax :</label>
+                                    <input type="text" id="total_tax" name="total_tax" value="{{ total_tax }}" placeholder="Please Enter Bills" oninput="validateNumber(this);" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="total">Total Amount :</label>
+                                    <input type="text" id="total_amount" name="total_amount" value="{{ total_amount }}" placeholder="Please Enter Bills" oninput="validateNumber(this);" readonly>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                    <div id="message" class="message"></div>
+                    <div id="error" class="message error" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer">
+            </div>
+        </footer>
+
+        <!-- Edit Record Modal -->
+
+        <div id="editModal" class="edit" onload="setDefaultDate()">
+
+            <div class="edit-bills">
+
+                <div class="title" bill_search>
+                    <h1>Edit Record</h1>
+                    <button type="button" onclick="closeModal()" style="background: white; height: 50px; width: 50px; margin-top: 70px; border: none; cursor: pointer;"><img src="{% static 'Images/close.png' %}" alt=""></button>
+                </div>
+
+
+                <form id="editForm" method="POST" action="{% url 'edit_record' %}">
+
+                    {% csrf_token %}
+
+                    <div class="edit-bill-table">
+
+                        <div class="edit-bill-details">
+
+                            <div class="bill-details">
+
+                                <div class="form-group">
+                                    <label for="bill_number">Bill Number : </label>
+                                    <input type="text" id="edit_record_id" name="id" placeholder="Enter Bill Number" oninput="validateNumber(this)" readonly>
+                                    <h3>
+                                        <div class="error-message" id="bill_number_error"></div>
+                                    </h3>
+                                    <label class="hidden">Bill Number : <input type="text" id="edit_bill_number" name="bill_number"></label><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customer_name">Customer Name :</label>
+                                    <input type="text" id="edit_customer_name" name="customer_name" placeholder="Enter Customer Name" oninput="validateCharacterWithSpaces(this)" required>
+                                    <h3>
+                                        <div class="error-meesage" id="customer_name_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customer_number">Customer Number :</label>
+
+                                    <div class="country-code">
+                                        <select id="country_code" onchange="updateFlag(this)">
+                                        <option value="+91" data-flag="https://flagcdn.com/w20/in.png">+91</option>
+                                    </select>
+                                        <img id="country_flag" src="{% static 'Images/india.webp' %}">
+                                        <input type="text" id="edit_customer_number" name="customer_number" oninput="validatePhoneNumber(this)" placeholder="Enter Customer phone number" required>
+                                    </div>
+                                    <h3>
+                                        <div class="error-message" id="customer_number_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="product_name">Customer Address :</label>
+                                    <input type="text" id="edit_address" name="address" placeholder="Enter Product Name" oninput="validateProduct(this)" required>
+                                    <h3>
+                                        <div class="error-message" id="address_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bill_date"> Bill Date :</label>
+                                    <input type="date" id="edit_date" name="date">
+                                    <h3>
+                                        <div class="error-message" id="customer_name_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="product_name">Product Name :</label>
+                                    <input type="text" id="edit_product_name" name="product_name" placeholder="Enter Product Name" oninput="validateProduct(this)" required>
+                                    <h3>
+                                        <div class="error-message" id="product_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bill_status">Bill Status :</label>
+                                    <div class="status">
+                                        <select id="edit_status" name="status">
+                                        <li><option  value="Cash">Cash</option></li>
+                                        <li><option value="Pending">Pending</option></li>
+                                        <li><option value="Delay">Delay</option></li>
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="quantity" id="quantity">Quantity :</label>
+                                    <input type="text" id="edit_quantity" name="quantity" placeholder="Enter Quantity" oninput="validateNumber(this); calculateTotals();" required>
+                                    <h3>
+                                        <div class="error-message" id="quantity_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="price">Price ( &#8377; ) :</label>
+                                    <input type="text" id="edit_price" name="price" placeholder="Enter Price In &#8377;" oninput="validateNumber(this); calculateTotals();" required>
+                                    <h3>
+                                        <div class="error-message" id="price_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tax">Tax 18% of Base Price :</label>
+                                    <input type="text" id="edit_tax" name="tax" placeholder="18% of Base Price" oninput="validateNumber(this);" readonly>
+                                    <h3>
+                                        <div class="error-message" id="tax_error">You are not edit this field..</div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="total">Total Amount :</label>
+                                    <input type="text" id="edit_total" name="total" placeholder="Total Amount" oninput="validateNumber(this);">
+                                    <h3>
+                                        <div class="error-message" id="total_error">You are not edit this field..</div>
+                                    </h3>
+                                </div>
+
+                                <div id="alert-message" class="alert" style="display: none;">Number fields can only contain numeric values.</div>
+
+                            </div>
+
+
+                            <div class="close">
+                                <button type="submit">Save</button>
+                                <button type="button" onclick="closeModal()">Cancel</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+
+    <script src="{% static 'JS/script.js' %}"></script>
+
+    <script>
+        function editRecord(id, billNumber, customerName, customerNumber, date, productName, quantity, price, tax, total, address, status) {
+
+            let formattedDate = '';
+            if (date) {
+                const parsedDate = new Date(date);
+
+                if (!isNaN(parsedDate.getTime())) { // Ensure the date is valid
+                    // Adjust for timezone offset
+                    parsedDate.setMinutes(parsedDate.getMinutes() - parsedDate.getTimezoneOffset());
+
+                    // Format the date as 'YYYY-MM-DD'
+                    formattedDate = parsedDate.toISOString().split('T')[0];
+                }
+            }
+
+            document.getElementById('edit_record_id').value = id;
+            document.getElementById('edit_bill_number').value = billNumber;
+            document.getElementById('edit_customer_name').value = customerName;
+            document.getElementById('edit_customer_number').value = customerNumber;
+            document.getElementById('edit_address').value = status;
+            document.getElementById('edit_date').value = formattedDate;
+            document.getElementById('edit_product_name').value = productName;
+            document.getElementById('edit_status').value = address;
+            document.getElementById('edit_quantity').value = quantity;
+            document.getElementById('edit_price').value = price;
+            document.getElementById('edit_tax').value = tax;
+            document.getElementById('edit_total').value = total;
+
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+
+        function downloadPDF(billNumber, customerName, customerNumber, date, productName, quantity, price, tax, total) {
+            var form = document.createElement('form');
+            form.method = 'GET';
+            form.action = '/generate_pdf/';
+
+            var inputs = [{
+                name: 'bill_number',
+                value: billNumber
+            }, {
+                name: 'customer_name',
+                value: customerName
+            }, {
+                name: 'customer_number',
+                value: customerNumber
+            }, {
+                name: 'date',
+                value: date
+            }, {
+                name: 'product_name',
+                value: productName
+            }, {
+                name: 'quantity',
+                value: quantity
+            }, {
+                name: 'price',
+                value: price
+            }, {
+                name: 'tax',
+                value: tax
+            }, {
+                name: 'total',
+                value: total
+            }];
+
+            inputs.forEach(function(input) {
+                var hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = input.name;
+                hiddenInput.value = input.value;
+                form.appendChild(hiddenInput);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function sendWhatsApp(customerNumber, billNumber, total) {
+            var message = encodeURIComponent(`Hello! Here is your bill information:\n\nBill Number: ${billNumber}\nTotal Amount: ₹${total}`);
+            var phoneNumber = encodeURIComponent(customerNumber);
+            var url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+            window.open(url, '_blank');
+        }
+
+        function showFallingPage() {
+            var fallingPage = document.getElementById('fallingPage');
+            fallingPage.classList.add('active');
+        }
+
+        function updateTotals() {
+            var table = document.getElementById('billTableBody');
+            var rows = table.getElementsByClassName('bill-search-table-raw-details');
+            var totalPrice = 0;
+            var totalTax = 0;
+            var totalAmount = 0;
+
+            for (var i = 0; i < rows.length; i++) {
+                var price = parseFloat(rows[i].getElementsByTagName('h5')[7].innerText.replace('₹ ', '').replace(',', ''));
+                var tax = parseFloat(rows[i].getElementsByTagName('h5')[8].innerText.replace('₹ ', '').replace(',', ''));
+                var amount = parseFloat(rows[i].getElementsByTagName('h5')[9].innerText.replace('₹ ', '').replace(',', ''));
+
+                totalPrice += isNaN(price) ? 0 : price;
+                totalTax += isNaN(tax) ? 0 : tax;
+                totalAmount += isNaN(amount) ? 0 : amount;
+            }
+
+            document.getElementById('total_price').value = '₹ ' + totalPrice.toFixed(2);
+            document.getElementById('total_tax').value = '₹ ' + totalTax.toFixed(2);
+            document.getElementById('total_amount').value = '₹ ' + totalAmount.toFixed(2);
+
+            // send the totals to the home page
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/update_totals/', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+            xhr.send(JSON.stringify({
+                total_amount: totalAmount,
+                total_tax: totalTax,
+                total_price: totalPrice
+            }));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotals();
+        });
+
+        var billCount = document.getElementById('billTableBody').rows.length;
+        console.log(`Number of bills: ${billCount}`);
+
+
+        function speakMessage(message) {
+            const msg = new SpeechSynthesisUtterance(message);
+            // Optionally, you can set the voice to a female voice if available
+            const voices = window.speechSynthesis.getVoices();
+            const femaleVoice = voices.find(voice => voice.name.includes('Female')) || voices[0];
+            msg.voice = femaleVoice;
+            window.speechSynthesis.speak(msg);
+        }
+
+        /*function validateNumber(field) {
+            const errorElement = document.getElementById(field.id + '_error');
+            const value = field.value;
+
+            if (/[^0-9]/.test(field.value)) {
+                errorElement.textContent = "Only Numbers Are Allowed...";
+                errorElement.style.display = 'block';
+            } else if (field.value === 'quantity' || field.value === 'price') {
+                // For quantity and price, check for 0
+                if (value == 0 || value === '') {
+                    errorElement.textContent = "0 Or Blank Space are not allowed.";
+                    errorElement.style.display = 'block';
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }*/
+
+        function validateNumber(field) {
+
+            let value = field.value;
+            let errorElement;
+
+            if (field.id === 'edit_price') {
+                errorElement = document.getElementById('price_error');
+            } else if (field.id === 'edit_quantity') {
+                errorElement = document.getElementById('quantity_error');
+            }
+
+            if (isNaN(value) || value.trim() === '' || parseFloat(value) <= 0) {
+                errorElement.textContent = "0, Characters And Space Are Not Allowed...";
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        function validateCharacterWithSpaces(field) {
+
+            const errorElement = document.getElementById('customer_name_error');
+
+            let value = field.value;
+            let regex = /^[A-Za-z\s]+$/;
+            if (!regex.test(value)) {
+                errorElement.textContent = "Numbers And Special Characters Are Not Allowed...";
+                field.nextElementSibling.style.display = 'block';
+            } else {
+                field.nextElementSibling.style.display = 'none';
+            }
+        }
+
+        function validateProduct(field) {
+            const errorElement = document.getElementById('product_error');
+            errorElement.style.display = 'none'; // All values are allowed for product name
+        }
+
+        function updateFlag(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const flagUrl = selectedOption.getAttribute('data-flag');
+            document.getElementById('country_flag').src = flagUrl;
+        }
+
+        function validatePhoneNumber(field) {
+            const errorElement = document.getElementById('customer_number_error');
+            const countryCode = document.getElementById('country_code').value;
+            let regex;
+
+            if (countryCode === '+91') {
+                regex = /^[0-9]{10}$/;
+            } else {
+                errorElement.textContent = "Unsupported Country Code";
+                errorElement.style.display = 'block';
+                return false;
+            }
+
+            if (!regex.test(field.value)) {
+                errorElement.textContent = "Invalid Phone Number For The Selected Country...";
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateForm() {
+            const fields = ['bill_number', 'customer_name', 'customer_number', 'quantity', 'price', 'tax', 'total'];
+            let valid = true;
+
+            fields.forEach(function(field) {
+                const element = document.getElementById(field);
+                const errorElement = document.getElementById(field + '_error');
+
+                if (element.value.trim() === "") {
+                    errorElement.textContent = "Blank Space is Not Allowed...";
+                    errorElement.style.display = 'block';
+                    valid = false;
+                } else if (errorElement.style.display === 'block') {
+                    valid = false;
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            });
+
+            if (valid) {
+                alert("Bill Updated Successfully! Thank You...");
+                speakMessage("Bill Updated Successfully! Thank You...")
+                    // Optionally, submit the form data here.
+            } else {
+                //alert("Please correct the errors and try again.");
+                speakMessage("Please Correct The Errors And Try Again.")
+            }
+        }
+
+        function calculateTotals() {
+
+            const quantity = parseFloat(document.getElementById('edit_quantity').value) || 0;
+            const price = parseFloat(document.getElementById('edit_price').value) || 0;
+            const taxRate = 0.18;
+            const totalElement = document.getElementById('edit_total');
+            const taxElement = document.getElementById('edit_tax');
+
+            if (quantity > 0 && price > 0) {
+                const tax = quantity * price * taxRate;
+                const total = (quantity * price) + tax;
+
+                taxElement.value = tax.toFixed(2);
+                totalElement.value = total.toFixed(2);
+            } else {
+                taxElement.value = '0.00';
+                totalElement.value = '0.00';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show';
+            setTimeout(() => {
+                toast.className = toast.className.replace('show', '');
+            }, 3000);
+        }
+
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('edit_date').value = today;
+        }
+    </script>
+
+</body>
+
+</html>

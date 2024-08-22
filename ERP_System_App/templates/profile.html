@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillBoost Invoice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'CSS/style-1.css' %}">
+    <link rel="icon" href="{% static 'Images/logo.png' %}">
+</head>
+
+<body>
+    <section>
+        <header>
+            <div class="navbar">
+                <div class="aside">
+                    <div class="logo">
+                        <a href="#"><img src="{% static 'Images/logo.png' %}" alt=""></a>
+                    </div>
+                    <div class="navi">
+                        <ul>
+                            <li>
+                                <a href="/home"><img src="{% static 'Images/dashboard.png' %}" alt="">Dashboard</a>
+                            </li>
+                            <li><a href="/bill_page">Bills</a></li>
+                            <li><a href="/business">Customers</a></li>
+                            <li>
+                                <a href="/profile">
+                                    <span class="username">{% if user.is_authenticated %}{{ user.username }}{% else %}Guest{% endif %}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <h1><a href="/sign_out">Sign Out</a></h1>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="main-content">
+                <div class="profile">
+                    <div class="user-profile">
+                        <div class="profile-details">
+                            <div class="top">
+
+                                {% if profile_picture %}
+                                <img src="{{ profile_picture }}" alt="Profile Picture" class="profile-image"> {% else %}
+                                <h1>No profile picture available.</h1>
+                                {% endif %}
+
+                                <div class="right">
+                                    <h1>{{ user.username }}'s Profile</h1>
+                                    <h3>{{ user.userprofile.bio }}</h3>
+                                </div>
+
+                            </div>
+
+                            <div class="bottom">
+
+                                <div class="form-group">
+                                    <label for="first_name">Username :</label>
+                                    <input type="text" id="first_name" name="first_name" value="{{ user.username }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="first_name">First Name :</label>
+                                    <input type="text" id="first_name" name="first_name" value="{{ user.userprofile.first_name }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="last_name">Last Name :</label>
+                                    <input type="text" id="last_name" name="last_name" value="{{ user.userprofile.last_name }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email :</label>
+                                    <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Address :</label>
+                                    <input type="text" id="address" name="address" value="{{ user.userprofile.address }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="customer_number">Contact Number :</label>
+
+                                    <div class="country-code">
+                                        <select id="country_code" onchange="updateFlag(this)" disabled>
+                                        <option value="+91" data-flag="https://flagcdn.com/w20/in.png">+91</option>
+                                    </select>
+                                        <img id="country_flag" src="{% static 'Images/india.webp' %}">
+                                        <input type="text" id="user_number" name="user_number" value="{{ user.userprofile.user_number }}" placeholder="Enter Customer phone number" readonly>
+                                    </div>
+                                    <h3>
+                                        <div class="error-message" id="user_number_error"></div>
+                                    </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date_of_birth">Date Of Birth :</label>
+                                    <input type="date" id="date_of_birth" name="date_of_birth" value="{{ formatted_date_of_birth }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="age">Age :</label>
+                                    <input type="text" id="edit_age" name="age" value="{{ user.userprofile.age }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_gender">Gender :</label>
+                                    <select id="edit_gender" name="gender" disabled>
+                                    <option value="Male" {% if user.userprofile.gender == "Male" %}selected{% endif %}>Male</option>
+                                    <option value="Female" {% if user.userprofile.gender == "Female" %}selected{% endif %}>Female</option>
+                                    <option value="Other" {% if user.userprofile.gender == "Other" %}selected{% endif %}>Other</option>
+                                </select>
+                                </div>
+
+                                <div class="button">
+                                    <a href="{% url 'edit_profile' %}"><button>Edit Profile</button></a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <footer>
+            <div class="footer"></div>
+        </footer>
+    </section>
+
+    <script src="{% static 'JS/Script.js' %}"></script>
+    <script>
+        // Complete and corrected calculateAge function
+        function calculateAge() {
+            const dobElement = document.getElementById('date_of_birth');
+            const ageElement = document.getElementById('age');
+
+            const dobValue = dobElement.value;
+            if (dobValue) {
+                const dob = new Date(dobValue);
+                const today = new Date();
+
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDifference = today.getMonth() - dob.getMonth();
+                const dayDifference = today.getDate() - dob.getDate();
+
+                if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                    age--;
+                }
+
+                ageElement.value = age;
+            } else {
+                ageElement.value = '';
+            }
+        }
+    </script>
+</body>
+
+</html>

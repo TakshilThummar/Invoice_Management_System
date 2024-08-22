@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bill PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Bill #{{ bill_number }}</h2>
+        <table>
+            <tr>
+                <th>Customer Name</th>
+                <td>{{ customer_name }}</td>
+            </tr>
+            <tr>
+                <th>Customer Number</th>
+                <td>{{ customer_number }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ date }}</td>
+            </tr>
+            <tr>
+                <th>Product Name</th>
+                <td>{{ product_name }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ quantity }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ price }}</td>
+            </tr>
+            <tr>
+                <th>Tax</th>
+                <td>{{ tax }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ total }}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

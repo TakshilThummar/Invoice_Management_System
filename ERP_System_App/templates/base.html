@@ -1,0 +1,326 @@
+{% load static %} {% load socialaccount %}
+
+<!DOCTYPE html>
+
+<html>
+
+<!--  ======================================================  Head Start  ======================================================  -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name=" viewport" content="width-device-width, initial-scale=1.0">
+
+    <title>Business Management System</title>
+
+    <link rel="stylesheet" href="{% static 'CSS/Sign_in_or_sign_up.css' %}">
+
+    <link rel="icon" href="{% static 'Images/logo.png' %}">
+
+    <script src="https://accounts.google.com/gsi/client" async></script>
+
+</head>
+
+<!--  ======================================================  Head End  ======================================================  -->
+
+<!--  ======================================================  Body Start  ======================================================  -->
+
+<body>
+
+    <!--  ======================================================  Sign In Start  ======================================================  -->
+
+
+    <section>
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <div class="signin">
+
+            <div class="signin-content">
+
+                <div class="signin-form" id="sign-in-form">
+                    <form action="{% url 'sign_in' %}" method="post">
+
+                        {% csrf_token %}
+
+                        <h1>Sign In</h1>
+
+                        <!--  ============================================  Alert Message Start  ============================================  -->
+
+
+                        {% if messages %}
+                        <div class="alert">
+                            <div id="messages" data-messages="{% for message in messages %}{{ message }}{% if not forloop.last %}|{% endif %}{% endfor %}"></div>
+                        </div>
+                        {% endif %}
+
+
+                        <!--  ============================================  Alert Message End  ============================================  -->
+
+                        <div class="validation">
+                            <label for="name">Email/Name/Phone Number : </label>
+                            <input type="text" id="username" name="username" placeholder="Enter Your Email/Name/Phone Number" required>
+                        </div>
+
+                        <div class="validation">
+                            <div class="password-toggle">
+                                <label for="password">Password : </label>
+                                <input class="password" type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                                <img id="toggle_password" class="eye-icon-signin" src="https://img.icons8.com/material-outlined/24/000000/visible.png" alt="Toggle Password">
+                            </div>
+                        </div>
+
+                        <div class="validation">
+                            <button type="submit" onclick="signIn()">Sign In</button>
+                        </div>
+
+                        <div class="or">
+                            <div class="or-content">
+                                <hr class="left">
+                                <h3>OR</h3>
+                                <hr class="right">
+                            </div>
+                        </div>
+
+                        <div class="social-login">
+
+                            <div class="scoial-title">
+                                <h3>Sign In With</h3>
+                            </div>
+
+                            <div class="social-accounts">
+                                <a href="#" class="google">
+                                    <img src="{% static 'Images/google.svg' %}" alt="Google">
+                                </a>
+
+                                <a href="#" class="facebook">
+                                    <img src="{% static 'Images/facebook.svg' %}" alt="Facebook">
+                                </a>
+
+                                <a href="#" class="apple">
+                                    <img src="{% static 'Images/apple.svg' %}" alt="Apple">
+                                </a>
+
+                                <a href="#" class="instagram">
+                                    <img src="{% static 'Images/instagram.svg' %}" alt="Instagram">
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="links">
+                            <label for="text" class="signup-link">Create a New Account ? <a href="/sign_up">Sign Up</a></label>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+    <script src="{% static 'JS/script.js' %}"></script>
+
+    <!--  ======================================================  Sign In End  ======================================================  -->
+
+</body>
+
+<!--  ======================================================  Body End  ======================================================  -->
+
+</html>
