@@ -1,1 +1,106 @@
-{% extends 'base.html' %}
+{% load static %} {% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<!-- coding by @_.codedevotee -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Business Management System</title>
+
+    <!--Boxicons CDN-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="{% static 'CSS/sign_in_or_sign_up.css' %}">
+
+    <link rel="icon" href="{% static 'Images/logo.png' %}">
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="form-box login" id="sign-in-form">
+            <h2>Login</h2>
+
+            <form action="{% url 'sign_in' %}" method="post">
+
+                {% csrf_token %}
+
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
+                    <input type="text" id="username" name="username" required>
+                    <label>Username</label>
+                </div>
+
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                    <input type="password" id="password" name="password" required>
+                    <label>Password</label>
+                </div>
+
+                <div class="remember-forgot">
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <button type="submit" onclick="signIn()" class="btn">Login</button>
+
+                <div class="or">
+                    <div class="or-content">
+                        <hr class="left">
+                        <h3>OR</h3>
+                        <hr class="right">
+                    </div>
+                </div>
+
+                <div class="social-login">
+
+                    <div class="scoial-title">
+                        <h3>Sign In With</h3>
+                    </div>
+
+                    <div class="social-accounts">
+                        <a href="#" class="google">
+                            <ion-icon name="logo-google"></ion-icon>
+                        </a>
+
+                        <a href="#" class="facebook">
+                            <ion-icon name="logo-facebook"></ion-icon>
+                        </a>
+
+                        <a href="#" class="apple">
+                            <ion-icon name="logo-apple"></ion-icon>
+                        </a>
+
+                        <a href="#" class="instagram">
+                            <ion-icon name="logo-instagram"></ion-icon>
+                        </a>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="login-register">
+                    <p>Don't have an account? <a href="/sign_up">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Script.js-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add the "loaded" class to the body once the DOM is fully loaded
+            document.body.classList.add("loaded");
+        });
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

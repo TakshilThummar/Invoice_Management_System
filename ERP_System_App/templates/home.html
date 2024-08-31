@@ -13,9 +13,12 @@
 
     <title>BillBoost Invoice</title>
 
-    <link rel="stylesheet" href="{% static 'CSS/style-1.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/Style-2.css' %}">
 
     <link rel="icon" href="{% static 'Images/logo.png' %}">
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </head>
 
@@ -56,42 +59,85 @@
 
                         <ul>
 
-                            <a href="{% url 'monthly_totals' %}" class="btn btn-primary">Download Revenue CSV</a>
+                            <!--<a href="{% url 'monthly_totals' %}" class="btn btn-primary">Download Revenue CSV</a>-->
 
-                            <li>
-                                <a href="/home">Dashboard</a>
+                            <li class="list active">
+                                <a href="/home">
+                                    <span class="icon">
+                                        <ion-icon name="home-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">Dashboard</span>
+                                    <span class="circle"></span>
+                                </a>
                             </li>
 
-                            <li>
-                                <a href="/bill_page">Bills</a>
+                            <li class="list">
+                                <a href="/bill_page">
+                                    <span class="icon">
+                                        <ion-icon name="person-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">Invoices</span>
+                                    <span class="circle"></span>
+                                </a>
                             </li>
 
-                            <li>
-                                <a href="/business">Customers</a>
+                            <li class="list">
+                                <a href="/business">
+                                    <span class="icon">
+                                        <ion-icon name="chatbubble-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">Customers</span>
+                                    <span class="circle"></span>
+                                </a>
                             </li>
 
-                            <li><a href="/profile/">
-                                {% if user.is_authenticated %}
-                                    <span class="username">{{ user.username }}</span>
+                            <li class="list">
+                                <a href="/profile">
+                                    <span class="icon">
+                                        <ion-icon name="camera-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">
+                                        {% if user.is_authenticated %}
+                                    <span class="username">{{ user.username }}</span> {% else %}
+                                    <span class="username">Guest</span> {% endif %}</a>
+                                </span>
+                                <span class="circle"></span>
+                                </a>
+                            </li>
+
+                            <li class="list">
+
+                                <span class="text">
+                                    {% if not request.user.is_authenticated %}
+
+                                    <h1>
+                                        <a href="/sign_out">
+                                            <span class="icon">
+                                                <ion-icon name="settings-outline"><img src="{% static 'Images/logout.png' %}" alt=""></ion-icon>
+                                            </span>
+                                </a>
+                                </h1>
+
                                 {% else %}
-                                    <span class="username">Guest</span>
-                                {% endif %}</a>
-                            </li>
 
-                            <li>
-                                {% if not request.user.is_authenticated %}
-
-                                <h1><a href="/sign_out">Sign Out</a></h1>
-
-                                {% else %}
-
-                                <h1><a href="/sign_out">Sign Out</a></h1>
+                                <h1>
+                                    <a href="/sign_out">
+                                        <span class="icon">
+                                            <img src="{% static 'Images/logout.png' %}">
+                                        </span>
+                                    </a>
+                                </h1>
 
                                 {% endif %}
 
+                                </span>
+                                <span class="circle"></span>
+                                </a>
                             </li>
 
                         </ul>
+
+                        <div class="indicator"></div>
 
                     </div>
 
@@ -106,266 +152,202 @@
 
         <!--  =======================================  Home Start  =======================================  -->
 
-        <section>
 
-            <div class="main-contetn">
 
-                <div class="home">
+        <div class="main-contetn">
 
-                    <div class="home-section">
+            <div class="home">
 
-                        <div class="cards">
-                            <div class="card">
-                                <h3>Total Income</h3>
-                                <h1><span id="total_amount"></span><span style="color: green;">  +55%</span></h1>
-                            </div>
+                <div class="home-section">
 
-                            <div class="card">
-                                <h3>Total Invoice</h3>
-                                <h1>{{ bill_count }}</span><span style="color: green;"> +55%</span></h1>
-                            </div>
-
-                            <div class="card">
-                                <h3>Total Customer</h3>
-                                <h1>{{ unique_customers }}</span><span style="color: green;"> +55%</span></h1>
-                            </div>
-
-                            <div class="card">
-                                <h3>Pending Bills</h3>
-                                <h1>{{ pending_bills }} <span style="color: green;">+5%</span></h1>
-                            </div>
-
-                            <div class="card">
-                                <h3>Clear Bills</h3>
-                                <h1>{{ cash_bills }} <span style="color: green;">+5%</span></h1>
-                            </div>
-
-                            <div class="card">
-                                <h3>Delay Bills</h3>
-                                <h1>{{ delay_bills }} <span style="color: green;">+5%</span></h1>
-                            </div>
-
+                    <div class="cards">
+                        <div class="card">
+                            <h3>Total Income</h3>
+                            <h1><span id="total_amount"></span><span style="color: green;">  +55%</span></h1>
                         </div>
 
-                        <div class="charts">
-                            <div class="chart">
-                                <h2>Your Revenue</h2>
-                                <canvas id="revenueChart"></canvas>
-                            </div>
-
-                            <div class="chart">
-                                <h2>Your Sales Overview</h2>
-                                <canvas id="salesOverviewChart"></canvas>
-                            </div>
-
-                            <div class="chart">
-                                <h2>Your Invoice</h2>
-                                <canvas id="invoiceChart"></canvas>
-                                <div id="invoiceChart"></div>
-                            </div>
-
-                            <div class="chart">
-                                <h2>Your Future 30 Days Revenue Prediction</h2>
-                                <canvas id="slaesPrediction"></canvas>
-                            </div>
-
-                            <div class="chart">
-                                <h2>Your Customer Growth</h2>
-                                <canvas id="customerGrowthChart"></canvas>
-                            </div>
-
+                        <div class="card">
+                            <h3>Total Invoice</h3>
+                            <h1>{{ bill_count }}</span><span style="color: green;"> +55%</span></h1>
                         </div>
+
+                        <div class="card">
+                            <h3>Total Customer</h3>
+                            <h1>{{ unique_customers }}</span><span style="color: green;"> +55%</span></h1>
+                        </div>
+
+                        <div class="card">
+                            <h3>Pending Bills</h3>
+                            <h1>{{ pending_bills }} <span style="color: green;">+5%</span></h1>
+                        </div>
+
+                        <div class="card">
+                            <h3>Clear Bills</h3>
+                            <h1>{{ cash_bills }} <span style="color: green;">+5%</span></h1>
+                        </div>
+
+                        <div class="card">
+                            <h3>Delay Bills</h3>
+                            <h1>{{ delay_bills }} <span style="color: green;">+5%</span></h1>
+                        </div>
+
                     </div>
 
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <div class="charts">
+                        <div class="chart">
+                            <h2>Your Revenue</h2>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
 
-                    <script>
-                        // Revenue Chart
-                        // Fetch data and create a bar chart
-                        function updateBarChart() {
-                            var xhr = new XMLHttpRequest();
+                        <div class="chart">
+                            <h2>Your Sales Overview</h2>
+                            <canvas id="salesOverviewChart"></canvas>
+                        </div>
 
-                            xhr.open('GET', '/get_totals/', true);
+                        <div class="chart">
+                            <h2>Your Invoice</h2>
+                            <canvas id="invoiceChart"></canvas>
+                            <div id="invoiceChart"></div>
+                        </div>
 
-                            xhr.onload = function() {
-                                if (xhr.status === 200) {
-                                    var response = JSON.parse(xhr.responseText);
+                        <div class="chart">
+                            <h2>Your Future 30 Days Revenue Prediction</h2>
+                            <canvas id="slaesPrediction"></canvas>
+                        </div>
 
-                                    var totals = response.totals.total_amount;
-                                    document.getElementById('total_amount').innerText = '₹ ' + totals.toLocaleString('en-IN', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    });
+                        <div class="chart">
+                            <h2>Your Customer Growth</h2>
+                            <canvas id="customerGrowthChart"></canvas>
+                        </div>
 
-                                    // Extract month names and their corresponding total amounts
-                                    var labels = Object.keys(response);
-                                    var data = Object.values(response).map(item => parseFloat(item.total_amount));
-
-                                    // Update the chart
-                                    var ctx = document.getElementById('revenueChart').getContext('2d');
-
-                                    var totalAmountChart = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: response.months, // Month names
-                                            datasets: [{
-                                                label: 'Total Revenue',
-                                                data: response.monthly_totals, // Total amounts
-                                                backgroundColor: '#DA7C25',
-                                                borderWidth: 0
-                                            }]
-                                        },
-                                        options: {
-                                            animation: {
-                                                duration: 2000,
-                                                easing: 'easeOutBounce'
-                                            },
-
-
-                                            scales: {
-                                                x: {
-                                                    title: {
-                                                        display: true,
-                                                        text: 'Months'
-                                                    }
-                                                },
-                                                y: {
-                                                    title: {
-                                                        display: true,
-                                                        text: 'Total Income'
-                                                    },
-                                                    beginAtZero: true
-                                                }
-                                            },
-                                            responsive: true,
-                                            layout: {
-                                                padding: 1
-                                            },
-                                            elements: {
-                                                bar: {
-                                                    borderWidth: 0,
-                                                    borderRadius: 4 // Optional: adds rounded corners to bars
-                                                }
-                                            },
-                                            // Add this to control bar width
-                                            scales: {
-                                                x: {
-                                                    barThickness: 5, // Fixed width of bars
-                                                    maxBarThickness: 5 // Maximum width of bars
-                                                }
-                                            }
-                                        }
-                                    });
-                                }
-                            };
-
-                            xhr.send();
-                        }
-
-                        // Call the function to update the chart on page load
-                        updateBarChart();
-
-                        setInterval(updateBarChart, 1000);
-
-
-                        // Sales Overview Chart
-                        /*var ctx2 = document.getElementById('salesOverviewChart').getContext('2d');
-                        var salesOverviewChart = new Chart(ctx2, {
-                            type: 'line',
-                            data: {
-                                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                datasets: [{
-                                    label: 'Sales Overview',
-                                    data: [100, 200, 300, 250, 400, 350, 400],
-                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                    borderColor: '#FF6384',
-                                    borderWidth: 2,
-                                    fill: true,
-                                    tension: 0.4
-                                }]
-                            },
-                            options: {
-                                animation: {
-                                    duration: 2000,
-                                    easing: 'easeOutCubic'
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        });*/
-
-                        // Invoice Chart
-
-                        // Get the context of the canvas element
-                        /*const ctx3 = document.getElementById('invoiceChart').getContext('2d');
-
-                        // Create the pie chart
-                        const myPieChart = new Chart(ctx3, {
-                            type: 'pie',
-                            data: {
-                                labels: ['Cash', 'Delay', 'Pending'],
-                                datasets: [{
-                                    data: [100, 300, 500],
-                                    backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: {
-                                        position: 'top',
-                                    },
-                                    tooltip: {
-                                        callbacks: {
-                                            label: function(tooltipItem) {
-                                                const label = tooltipItem.label || '';
-                                                const value = tooltipItem.raw || 0;
-                                                return `${label}: ${value}`;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        });*/
-
-                        // Customer Growth Chart
-                        var ctx4 = document.getElementById('customerGrowthChart').getContext('2d');
-                        var customerGrowthChart = new Chart(ctx4, {
-                            type: 'radar',
-                            data: {
-                                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                                datasets: [{
-                                    label: 'Customer Growth',
-                                    data: [65, 59, 80, 81],
-                                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                                    borderColor: 'rgba(153, 102, 255, 1)',
-                                    borderWidth: 2
-                                }]
-                            },
-                            options: {
-                                animation: {
-                                    duration: 2000,
-                                    easing: 'easeOutElastic'
-                                },
-                                scales: {
-                                    r: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        });
-                    </script>
-
+                    </div>
                 </div>
 
-            </div>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                    // Revenue Chart
+                    // Fetch data and create a bar chart
+                    function updateBarChart() {
+                        var xhr = new XMLHttpRequest();
+
+                        xhr.open('GET', '/get_totals/', true);
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+
+                                var totals = response.totals.total_amount;
+                                document.getElementById('total_amount').innerText = '₹ ' + totals.toLocaleString('en-IN', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+
+                                // Extract month names and their corresponding total amounts
+                                var labels = Object.keys(response);
+                                var data = Object.values(response).map(item => parseFloat(item.total_amount));
+
+                                // Update the chart
+                                var ctx = document.getElementById('revenueChart').getContext('2d');
+
+                                var totalAmountChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: response.months, // Month names
+                                        datasets: [{
+                                            label: 'Total Revenue',
+                                            data: response.monthly_totals, // Total amounts
+                                            backgroundColor: '#DA7C25',
+                                            borderWidth: 0
+                                        }]
+                                    },
+                                    options: {
+                                        animation: {
+                                            duration: 2000,
+                                            easing: 'easeOutBounce'
+                                        },
+
+
+                                        scales: {
+                                            x: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Months'
+                                                }
+                                            },
+                                            y: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Total Income'
+                                                },
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        responsive: true,
+                                        layout: {
+                                            padding: 1
+                                        },
+                                        elements: {
+                                            bar: {
+                                                borderWidth: 0,
+                                                borderRadius: 4 // Optional: adds rounded corners to bars
+                                            }
+                                        },
+                                        // Add this to control bar width
+                                        scales: {
+                                            x: {
+                                                barThickness: 5, // Fixed width of bars
+                                                maxBarThickness: 5 // Maximum width of bars
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        };
+
+                        xhr.send();
+                    }
+
+                    // Call the function to update the chart on page load
+                    updateBarChart();
+
+                    setInterval(updateBarChart, 1000);
+
+                    // Customer Growth Chart
+                    var ctx4 = document.getElementById('customerGrowthChart').getContext('2d');
+                    var customerGrowthChart = new Chart(ctx4, {
+                        type: 'radar',
+                        data: {
+                            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                            datasets: [{
+                                label: 'Customer Growth',
+                                data: [65, 59, 80, 81],
+                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            animation: {
+                                duration: 2000,
+                                easing: 'easeOutElastic'
+                            },
+                            scales: {
+                                r: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
 
             </div>
 
-        </section>
+        </div>
+
+        </div>
+
+
 
         <!--  ======================================= Home End  =======================================  -->
 
@@ -509,6 +491,19 @@
                     });
                 });
         });
+    </script>
+
+    <script>
+        const list = document.querySelectorAll('.list');
+
+        function activeLink() {
+            list.forEach((item) =>
+                item.classList.remove('active'));
+            this.classList.add('active');
+        }
+
+        list.forEach((item) =>
+            item.addEventListener('click', activeLink));
     </script>
 
 </body>

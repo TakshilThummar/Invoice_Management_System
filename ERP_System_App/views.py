@@ -3,15 +3,16 @@ from datetime import datetime, timezone
 import json
 import os
 from statistics import LinearRegression
-import pandas as pd
-import numpy as np
+from django.urls import reverse_lazy
+import pandas as pd # type: ignore
+import numpy as np # type: ignore
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
-from weasyprint import HTML
+from weasyprint import HTML # type: ignore
 from .models import Bill, Customer
 from .forms import BillForm, CustomerForm
 from django.contrib.auth.models import User
@@ -19,10 +20,13 @@ from django.db.models import Sum
 from django.views.decorators.http import require_POST
 from django.db.models import Count
 from django.utils import timezone
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression # type: ignore
 from datetime import datetime
 from .forms import UserForm, UserProfileForm
 from .models import UserProfile
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 
 def sign_in(request):
     if request.method == "POST":
@@ -473,20 +477,6 @@ def edit_profile(request):
     
     return render(request, 'edit_profile.html', context)
 
-'''@login_required
-def profile(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-
-    formatted_date_of_birth = user_profile.date_of_birth.strftime('%Y-%m-%d') if user_profile.date_of_birth else ''
-
-    context = {
-        'user_profile': user_profile,
-        'formatted_date_of_birth': formatted_date_of_birth,
-        'profile_picture': user_profile.profile_picture.url if user_profile.profile_picture else None,
-    }
-
-    return render(request, 'profile.html', context)'''
-
 @login_required
 def profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -512,3 +502,21 @@ def profile(request):
     }
     
     return render(request, 'profile.html', context)
+
+def custom_404(request, exception):
+    return render(request, '404.html', {"request_path": request.path}, status=404)
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'forgot_password.html'
+    email_template_name = 'password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+    form_class = PasswordResetForm
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'reset_password.html'
+    success_url = reverse_lazy('password_reset_complete')
+    form_class = SetPasswordForm
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'reset_password_done.html'

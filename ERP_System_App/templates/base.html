@@ -13,7 +13,7 @@
 
     <title>Business Management System</title>
 
-    <link rel="stylesheet" href="{% static 'CSS/Sign_in_or_sign_up.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/sign_in_or_sign_up.css' %}">
 
     <link rel="icon" href="{% static 'Images/logo.png' %}">
 
@@ -263,6 +263,12 @@
 
                         <div class="validation">
                             <button type="submit" onclick="signIn()">Sign In</button>
+                        </div>
+
+                        <div class="validation">
+                            <a href="{% url 'password_reset' %}">
+                                <label for="forgot_password">Forgot Password</label>
+                            </a>
                         </div>
 
                         <div class="or">

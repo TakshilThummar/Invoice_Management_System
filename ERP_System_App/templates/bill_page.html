@@ -8,47 +8,117 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BillBoost Invoice</title>
-    <link rel="stylesheet" href="{% static 'CSS/style-1.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/style-2.css' %}">
     <link rel="icon" href="{% static 'Images/logo.png' %}">
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body>
 
     <section>
+
         <header>
+
             <div class="navbar">
+
                 <div class="aside">
+
                     <div class="logo">
                         <a href="#"><img src="{% static 'Images/logo.png' %}" alt=""></a>
                     </div>
+
                     <div class="navi">
+
                         <ul>
-                            <li><a href="/home">Dashboard</a></li>
 
-                            <li><a href="/bill_page">Bills</a></li>
+                            <!--<a href="{% url 'monthly_totals' %}" class="btn btn-primary">Download Revenue CSV</a>-->
 
-                            <li><a href="/business">Customers</a></li>
-
-                            <li><a href="/profile">
-                                {% if user.is_authenticated %}
-                                    <span class="username">{{ user.username }}</span>
-                                {% else %}
-                                    <span class="username">Guest</span>
-                                {% endif %}</a>
+                            <li class="list">
+                                <a href="/home">
+                                    <span class="icon">
+                                        <ion-icon name="home-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">Dashboard</span>
+                                    <span class="circle"></span>
+                                </a>
                             </li>
 
-                            <li>
-                                {% if not request.user.is_authenticated %}
-                                <h1><a href="/sign_out">Sign Out</a></h1>
+                            <li class="list active">
+                                <a href="/bill_page">
+                                    <span class="icon">
+                                        <ion-icon name="person-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">Invoices</span>
+                                    <span class="circle"></span>
+                                </a>
+                            </li>
+
+                            <li class="list">
+                                <a href="/business">
+                                    <span class="icon">
+                                        <ion-icon name="chatbubble-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">Customers</span>
+                                    <span class="circle"></span>
+                                </a>
+                            </li>
+
+                            <li class="list">
+                                <a href="/profile">
+                                    <span class="icon">
+                                        <ion-icon name="camera-outline"></ion-icon>
+                                    </span>
+                                    <span class="text">
+                                        {% if user.is_authenticated %}
+                                    <span class="username">{{ user.username }}</span> {% else %}
+                                    <span class="username">Guest</span> {% endif %}</a>
+                                </span>
+                                <span class="circle"></span>
+                                </a>
+                            </li>
+
+                            <li class="list">
+
+                                <span class="text">
+                                    {% if not request.user.is_authenticated %}
+
+                                    <h1>
+                                        <a href="/sign_out">
+                                            <span class="icon">
+                                                <ion-icon name="settings-outline"><img src="{% static 'Images/logout.png' %}" alt=""></ion-icon>
+                                            </span>
+                                </a>
+                                </h1>
+
                                 {% else %}
-                                <h1><a href="/sign_out">Sign Out</a></h1>
+
+                                <h1>
+                                    <a href="/sign_out">
+                                        <span class="icon">
+                                            <img src="{% static 'Images/logout.png' %}">
+                                        </span>
+                                    </a>
+                                </h1>
+
                                 {% endif %}
+
+                                </span>
+                                <span class="circle"></span>
+                                </a>
                             </li>
 
                         </ul>
+
+                        <div class="indicator"></div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </header>
 
         <section>
@@ -592,6 +662,19 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('edit_date').value = today;
         }
+    </script>
+
+    <script>
+        const list = document.querySelectorAll('.list');
+
+        function activeLink() {
+            list.forEach((item) =>
+                item.classList.remove('active'));
+            this.classList.add('active');
+        }
+
+        list.forEach((item) =>
+            item.addEventListener('click', activeLink));
     </script>
 
 </body>
