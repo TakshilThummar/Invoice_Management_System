@@ -99,9 +99,9 @@ header {
     display: none;
 }
 
-.from-box h2 {
+.form-box h2 {
     font-size: 2em;
-    color: black;
+    color: white;
     text-align: center;
 }
 
@@ -109,7 +109,7 @@ header {
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
     margin: 30px 0;
 }
 
@@ -119,7 +119,7 @@ header {
     left: 5px;
     transform: translateY(-50%);
     font-size: 1em;
-    color: black;
+    color: white;
     font-weight: 500;
     pointer-events: none;
     transition: 0.5s;
@@ -137,7 +137,7 @@ header {
     border: none;
     outline: none;
     font-size: 1em;
-    color: black;
+    color: white;
     font-weight: 700;
     padding: 0 35px 0 5px;
 }
@@ -146,7 +146,7 @@ header {
     position: absolute;
     right: 8px;
     font-size: 1.2em;
-    color: black;
+    color: white;
     line-height: 60px;
 }
 
@@ -158,7 +158,7 @@ header {
 }
 
 .remember-forgot a {
-    color: black;
+    color: white;
     font-weight: 700;
     text-decoration: none;
     transition: 0.5s;
@@ -185,14 +185,14 @@ header {
 
 .login-register {
     font-size: 1.1em;
-    color: black;
+    color: white;
     text-align: center;
     font-weight: 600;
     margin: 25px 0 10px;
 }
 
 .login-register p a {
-    color: black;
+    color: white;
     text-decoration: none;
     font-weight: 800;
     transition: 0.5s;
@@ -236,6 +236,7 @@ header {
     margin-top: -22px;
     margin-left: 20px;
     margin-right: 20px;
+    color: white;
 }
 
 .or .or-content hr {
@@ -264,6 +265,7 @@ hr {
 }
 
 .social-login {
+    color: white;
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -271,6 +273,7 @@ hr {
 
 .social-login h3 {
     font-size: 20px;
+    color: white;
 }
 
 .social-accounts {
@@ -281,6 +284,6 @@ hr {
 }
 
 .social-accounts a {
-    color: black;
+    color: white;
     cursor: pointer;
 }

@@ -1,332 +1,124 @@
-{% load static %} {% load socialaccount %}
+{% load static %}
 
 <!DOCTYPE html>
-
-<html>
-
-<!--  ======================================================  Head Start  ======================================================  -->
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
-    <meta name=" viewport" content="width-device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BillBoost Invoice{% endblock %}</title>
 
-    <title>Business Management System</title>
+    <link rel="stylesheet" href="{% static 'CSS/Style_Sheet_2.css' %}">
 
-    <link rel="stylesheet" href="{% static 'CSS/sign_in_or_sign_up.css' %}">
 
-    <link rel="icon" href="{% static 'Images/logo.png' %}">
+    <link rel="icon" href="{% static 'Images/file.png' %}">
 
-    <script src="https://accounts.google.com/gsi/client" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
 
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 
-<!--  ======================================================  Head End  ======================================================  -->
-
-<!--  ======================================================  Body Start  ======================================================  -->
-
 <body>
+    <header class="header">
+        <div class="header__container">
 
-    <!--  ======================================================  Sign In Start  ======================================================  -->
+            <h1 class="header__logo">
+                <a href="/home/"><img src="{% static 'Images/file.png' %}"></a>/{{ page_name }}/</h1>
 
+            <div class="header__toggle">
+                <i id="header-toggle" class='bx bx-menu'></i>
+            </div>
+        </div>
+    </header>
 
-    <section>
+    <div class="nav" id="navbar">
+        <nav class="nav__container">
+            <div>
+                <a href="/home/" class="nav__link nav__logo">
+                    <span class="nav__logo-name"><img src="{% static 'Images/file.png' %}" alt=""></span>
+                </a>
 
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+                <div class="nav__list">
+                    <div class="nav__items">
 
-        <div class="signin">
-
-            <div class="signin-content">
-
-                <div class="signin-form" id="sign-in-form">
-                    <form action="{% url 'sign_in' %}" method="post">
-
-                        {% csrf_token %}
-
-                        <h1>Sign In</h1>
-
-                        <!--  ============================================  Alert Message Start  ============================================  -->
-
-
-                        {% if messages %}
-                        <div class="alert">
-                            <div id="messages" data-messages="{% for message in messages %}{{ message }}{% if not forloop.last %}|{% endif %}{% endfor %}"></div>
-                        </div>
-                        {% endif %}
-
-
-                        <!--  ============================================  Alert Message End  ============================================  -->
-
-                        <div class="validation">
-                            <label for="name">Email/Name/Phone Number : </label>
-                            <input type="text" id="username" name="username" placeholder="Enter Your Email/Name/Phone Number" required>
-                        </div>
-
-                        <div class="validation">
-                            <div class="password-toggle">
-                                <label for="password">Password : </label>
-                                <input class="password" type="password" id="password" name="password" placeholder="Enter Your Password" required>
-                                <img id="toggle_password" class="eye-icon-signin" src="https://img.icons8.com/material-outlined/24/000000/visible.png" alt="Toggle Password">
-                            </div>
-                        </div>
-
-                        <div class="validation">
-                            <button type="submit" onclick="signIn()">Sign In</button>
-                        </div>
-
-                        <div class="validation">
-                            <a href="{% url 'password_reset' %}">
-                                <label for="forgot_password">Forgot Password</label>
+                        <li class="list {% block dashboard_active %}{% endblock %}">
+                            <a href="/home" class="nav__link active">
+                                <ion-icon name="home" class="nav__icon"></ion-icon>
+                                <span class="nav__name">Dashboard</span>
                             </a>
-                        </div>
+                        </li>
 
-                        <div class="or">
-                            <div class="or-content">
-                                <hr class="left">
-                                <h3>OR</h3>
-                                <hr class="right">
-                            </div>
-                        </div>
+                        <li class="list {% block invoices_active %}{% endblock %}">
+                            <a href="/bill_page" class="nav__link">
+                                <ion-icon name="document-text" class="nav__icon"></ion-icon>
+                                <span class="nav__name">Invoices</span>
+                            </a>
+                        </li>
 
-                        <div class="social-login">
+                        <li class="list {% block customers_active %}{% endblock %}">
+                            <a href="/business" class="nav__link">
+                                <ion-icon name="people" class="nav__icon"></ion-icon>
+                                <span class="nav__name">Customers</span>
+                            </a>
+                        </li>
 
-                            <div class="scoial-title">
-                                <h3>Sign In With</h3>
-                            </div>
-
-                            <div class="social-accounts">
-                                <a href="#" class="google">
-                                    <img src="{% static 'Images/google.svg' %}" alt="Google">
-                                </a>
-
-                                <a href="#" class="facebook">
-                                    <img src="{% static 'Images/facebook.svg' %}" alt="Facebook">
-                                </a>
-
-                                <a href="#" class="apple">
-                                    <img src="{% static 'Images/apple.svg' %}" alt="Apple">
-                                </a>
-
-                                <a href="#" class="instagram">
-                                    <img src="{% static 'Images/instagram.svg' %}" alt="Instagram">
-                                </a>
-                            </div>
-
-                        </div>
-
-                        <hr>
-
-                        <div class="links">
-                            <label for="text" class="signup-link">Create a New Account ? <a href="/sign_up">Sign Up</a></label>
-                        </div>
-
-                    </form>
+                        <li class="list {% block profile_active %}{% endblock %}">
+                            <a href="/profile" class="nav__link">
+                                <ion-icon name="person" class="nav__icon"></ion-icon>
+                                <span class="nav__name">{% if user.is_authenticated %}{{ user.username }}{% else %}Guest{% endif %}</span>
+                            </a>
+                        </li>
+                    </div>
                 </div>
-
             </div>
 
+            <a href="/sign_out" class="nav__link nav__logout">
+                <i class='bx bx-log-out nav__icon'></i>
+                <span class="nav__name">Log Out</span>
+            </a>
+        </nav>
+    </div>
 
+
+    {% block content %}{% endblock %}
+
+
+
+    <footer>
+        <div class="footer">
+            <!-- Footer content -->
         </div>
+    </footer>
 
-    </section>
+    <script>
+        /*==================== SHOW NAVBAR ====================*/
+        const showMenu = (headerToggle, navbarId) => {
+            const toggleBtn = document.getElementById(headerToggle),
+                nav = document.getElementById(navbarId)
 
-    <script src="{% static 'JS/script.js' %}"></script>
+            // Validate that variables exist
+            if (headerToggle && navbarId) {
+                toggleBtn.addEventListener('click', () => {
+                    // We add the show-menu class to the div tag with the nav__menu class
+                    nav.classList.toggle('show-menu')
+                        // change icon
+                    toggleBtn.classList.toggle('bx-x')
+                })
+            }
+        }
+        showMenu('header-toggle', 'navbar')
 
-    <!--  ======================================================  Sign In End  ======================================================  -->
 
+        const list = document.querySelectorAll('.list');
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove('active'));
+            this.classList.add('active');
+        }
+        list.forEach((item) => item.addEventListener('click', activeLink));
+    </script>
 </body>
-
-<!--  ======================================================  Body End  ======================================================  -->
 
 </html>

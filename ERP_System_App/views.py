@@ -95,6 +95,9 @@ def home(request):
     delay_bills = bills.filter(status='Delay').count()
     pending_bills = bills.filter(status='Pending').count()
 
+    if request.path == '/home/':
+        page_name = "Dashboard"
+
     context = {
         'bills': bills,
         'customers': customers,
@@ -103,6 +106,7 @@ def home(request):
         'cash_bills': cash_bills,
         'delay_bills': delay_bills,
         'pending_bills': pending_bills,
+        'page_name' : page_name,
     }
 
     return render(request, 'home.html', context)
@@ -124,7 +128,13 @@ def generate_bill(request):
     last_bill = Bill.objects.order_by('id').last()
     next_bill_number = last_bill.id + 1 if last_bill else 1
 
-    context = {'form': form, 'next_bill_number' : next_bill_number}
+    if request.path == '/generate_bill/':
+        page_name = "Dashboard/Generate Bill"
+
+    context = {'form': form, 
+               'next_bill_number' : next_bill_number,
+                'page_name' : page_name,   
+            }
 
     return render(request, 'generate_bill.html', context)
 
@@ -144,7 +154,13 @@ def generate_customer(request):
     last_customer = Customer.objects.last()
     next_id = (last_customer.id + 1) if last_customer else 1
 
-    context = {'form': form, 'next_id' : next_id}
+    if request.path == '/generate_customer/':
+        page_name = "Dashboard/Generate Customer"
+
+    context = {'form': form, 
+               'next_id' : next_id,
+               'page_name' : page_name,
+            }
 
     return render(request, 'generate_customer.html', context)
 
@@ -216,9 +232,13 @@ def bill_page(request):
     bills = Bill.objects.filter(user=user)
     customers = Customer.objects.filter(user=user)
 
+    if request.path == '/bill_page':
+        page_name = "Dashboard/Invoices"
+
     context = {
         'bills': bills,
         'customers': customers,
+        'page_name' : page_name,
     }
     return render(request, 'bill_page.html', context)
 
@@ -228,9 +248,13 @@ def business(request):
     bills = Bill.objects.filter(user=user)
     customers = Customer.objects.filter(user=user) # Fetch login customer from the database
 
+    if request.path == '/business':
+        page_name = "Dashboard/Customers"
+
     context = {
         'bills': bills,
         'customers': customers,
+        'page_name' : page_name,
     }
 
     return render(request, 'business.html', context)
@@ -494,11 +518,15 @@ def profile(request):
     else:
         form = UserProfileForm(instance=user_profile)
 
+    if request.path == '/profile/':
+        page_name = "Dashboard/Profile"
+
     context = {
         'user_profile': user_profile,
         'formatted_date_of_birth': formatted_date_of_birth,
         'profile_picture': user_profile.profile_picture.url if user_profile.profile_picture else None,
         'form': form,
+        'page_name' : page_name,
     }
     
     return render(request, 'profile.html', context)
@@ -520,3 +548,16 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'reset_password_done.html'
+
+def my_view(request):
+    if request.path == '/home/':
+        page_name = "Home Page"
+    elif request.path == '/bill_page':
+        page_name = "Invoice"
+    else:
+        page_name = "Unknown Page"
+    
+    context = {
+        'page_name': page_name,
+    }
+    return render(request, 'base.html', {"request_path": request.path})

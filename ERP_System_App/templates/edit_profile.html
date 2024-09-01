@@ -1,476 +1,291 @@
-{% load static %}
+{% extends 'base.html' %} {% block title %}Invoices - BillBoost Invoices{% endblock %} {% block invoices_active %}active{% endblock %} {% block content %} {% load static %}
 
-<!DOCTYPE html>
+<!--  =======================================  Edit Profile Start  =======================================  -->
 
-<html>
+<section>
 
-<!--  ======================================================  Head Start  ======================================================  -->
+    <div class="main-content">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
-    <meta name=" viewport" content="width-device-width, initial-scale=1.0">
+        <div class="edit-profile">
 
-    <title>BillBoost Invoice</title>
+            <div class="user-profile">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                <div class="container">
 
-    <link rel="stylesheet" href="{% static 'CSS/style-1.css' %}">
-
-    <link rel="icon" href="{% static 'Images/logo.png' %}">
-
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-</head>
-
-<!--  ======================================================  Head End  ======================================================  -->
-
-<!--  ======================================================  Body Start  ======================================================  -->
-
-<body>
-
-    <section>
-
-        <!--  ============================================  Alert Message Start  ============================================  -->
-
-
-        <!--  ============================================  Alert Message End  ============================================  -->
-
-
-        <!--  ============================================  Navigation Start  ============================================  -->
-
-        <header>
-
-            <div class="navbar">
-
-                <div class="aside">
-
-                    <div class="logo">
-                        <a href="#"><img src="{% static 'Images/logo.png' %}" alt=""></a>
+                    <div class="title">
+                        <h1>Edit Profile</h1>
                     </div>
 
-                    <div class="navi">
+                    <form method="POST" enctype="multipart/form-data">
 
-                        <ul>
+                        {% csrf_token %}
 
-                            <!--<a href="{% url 'monthly_totals' %}" class="btn btn-primary">Download Revenue CSV</a>-->
+                        <div class="profile-details">
 
-                            <li class="list">
-                                <a href="/home">
-                                    <span class="icon">
-                                            <ion-icon name="home-outline"></ion-icon>
-                                        </span>
-                                    <span class="text">Dashboard</span>
-                                    <span class="circle"></span>
-                                </a>
-                            </li>
-
-                            <li class="list">
-                                <a href="/bill_page">
-                                    <span class="icon">
-                                            <ion-icon name="person-outline"></ion-icon>
-                                        </span>
-                                    <span class="text">Invoices</span>
-                                    <span class="circle"></span>
-                                </a>
-                            </li>
-
-                            <li class="list active">
-                                <a href="/business">
-                                    <span class="icon">
-                                            <ion-icon name="chatbubble-outline"></ion-icon>
-                                        </span>
-                                    <span class="text">Customers</span>
-                                    <span class="circle"></span>
-                                </a>
-                            </li>
-
-                            <li class="list">
-                                <a href="/profile">
-                                    <span class="icon">
-                                            <ion-icon name="camera-outline"></ion-icon>
-                                        </span>
-                                    <span class="text">
-                                            {% if user.is_authenticated %}
-                                        <span class="username">{{ user.username }}</span> {% else %}
-                                    <span class="username">Guest</span> {% endif %}</a>
-                                </span>
-                                <span class="circle"></span>
-                                </a>
-                            </li>
-
-                            <li class="list">
-
-                                <span class="text">
-                                    {% if not request.user.is_authenticated %}
-    
-                                    <h1>
-                                        <a href="/sign_out">
-                                            <span class="icon">
-                                                <ion-icon name="settings-outline"><img src="{% static 'Images/logout.png' %}" alt=""></ion-icon>
-                                            </span>
-                                </a>
-                                </h1>
-
-                                {% else %}
-
-                                <h1>
-                                    <a href="/sign_out">
-                                        <span class="icon">
-                                            <img src="{% static 'Images/logout.png' %}">
-                                        </span>
-                                    </a>
-                                </h1>
-
-                                {% endif %}
-
-                                </span>
-                                <span class="circle"></span>
-                                </a>
-                            </li>
-
-                        </ul>
-
-                        <div class="indicator"></div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
-
-        <!--  =======================================  Navigation End  =======================================  -->
-
-
-        <!--  =======================================  Generate Bill Start  =======================================  -->
-
-        <section>
-
-            <div class="main-content">
-
-                <div class="edit-profile">
-
-                    <div class="user-profile">
-
-                        <div class="container">
-
-                            <div class="title">
-                                <h1>Edit Profile</h1>
+                            <div class="form-group">
+                                <label for="image">First Name :</label>
+                                <input type="file" id="profile_picture" name="profile_picture" placeholder="Enter Customer Name" required>
+                                <h3>
+                                    <div class="error-meesage" id="image_error"></div>
+                                </h3>
                             </div>
 
-                            <form method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
+                            <div class="form-group">
+                                <label for="first_name">First Name :</label>
+                                <input type="text" id="first_name" name="first_name" placeholder="Enter Customer Name" value="{{ form.first_name.value }}" required>
+                                <h3>
+                                    <div class="error-meesage" id="first_name_error"></div>
+                                </h3>
+                            </div>
 
-                                <div class="profile-details">
+                            <div class="form-group">
+                                <label for="last_name">Last Name :</label>
+                                <input type="text" id="last_name" name="last_name" placeholder="Enter Customer Name" value="{{ form.last_name.value }}" required>
+                                <h3>
+                                    <div class="error-meesage" id="first_name_error"></div>
+                                </h3>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="image">First Name :</label>
-                                        <input type="file" id="profile_picture" name="profile_picture" placeholder="Enter Customer Name" required>
-                                        <h3>
-                                            <div class="error-meesage" id="image_error"></div>
-                                        </h3>
-                                    </div>
+                            <div class="form-group">
+                                <label for="email">Email :</label>
+                                <input type="email" id="email" name="email" placeholder="Enter Email" value="{{ user.email }}" readonly>
+                                <h3>
+                                    <div class="error-message" id="email_error"></div>
+                                </h3>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="first_name">First Name :</label>
-                                        <input type="text" id="first_name" name="first_name" placeholder="Enter Customer Name" value="{{ form.first_name.value }}" required>
-                                        <h3>
-                                            <div class="error-meesage" id="first_name_error"></div>
-                                        </h3>
-                                    </div>
+                            <div class="form-group">
+                                <label for="customer_number">Contact Number :</label>
 
-                                    <div class="form-group">
-                                        <label for="last_name">Last Name :</label>
-                                        <input type="text" id="last_name" name="last_name" placeholder="Enter Customer Name" value="{{ form.last_name.value }}" required>
-                                        <h3>
-                                            <div class="error-meesage" id="first_name_error"></div>
-                                        </h3>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="email">Email :</label>
-                                        <input type="email" id="email" name="email" placeholder="Enter Email" value="{{ user.email }}" readonly>
-                                        <h3>
-                                            <div class="error-message" id="email_error"></div>
-                                        </h3>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="customer_number">Contact Number :</label>
-
-                                        <div class="country-code">
-                                            <select id="country_code" onchange="updateFlag(this)">
+                                <div class="country-code">
+                                    <select id="country_code" onchange="updateFlag(this)">
                                                 <option value="+91" data-flag="https://flagcdn.com/w20/in.png">+91</option>
                                             </select>
-                                            <img id="country_flag" src="{% static 'Images/india.webp' %}">
-                                            <input type="text" id="user_number" name="user_number" value="{{ form.user_number.value }}" oninput="validatePhoneNumber(this)" placeholder="Enter Customer phone number" required>
-                                        </div>
-                                        <h3>
-                                            <div class="error-message" id="user_number_error"></div>
-                                        </h3>
-                                    </div>
+                                    <img id="country_flag" src="{% static 'Images/india.webp' %}">
+                                    <input type="text" id="user_number" name="user_number" value="{{ form.user_number.value }}" oninput="validatePhoneNumber(this)" placeholder="Enter Customer phone number" required>
+                                </div>
+                                <h3>
+                                    <div class="error-message" id="user_number_error"></div>
+                                </h3>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="customer_address">Address :</label>
-                                        <input type="text" id="address" name="address" placeholder="Enter Customer Address" value="{{ form.address.value }}" required>
-                                        <h3>
-                                            <div class="error-message" id="address_error"></div>
-                                        </h3>
-                                    </div>
+                            <div class="form-group">
+                                <label for="customer_address">Address :</label>
+                                <input type="text" id="address" name="address" placeholder="Enter Customer Address" value="{{ form.address.value }}" required>
+                                <h3>
+                                    <div class="error-message" id="address_error"></div>
+                                </h3>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="bill_date"> Date Of Birth : </label>
-                                        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ formatted_date_of_birth }}" oninput="calculateAge()" required>
-                                        <h3>
-                                            <div class="error-message" id="date_of_birth_name_error"></div>
-                                        </h3>
-                                    </div>
+                            <div class="form-group">
+                                <label for="bill_date"> Date Of Birth : </label>
+                                <input type="date" id="date_of_birth" name="date_of_birth" value="{{ formatted_date_of_birth }}" oninput="calculateAge()" required>
+                                <h3>
+                                    <div class="error-message" id="date_of_birth_name_error"></div>
+                                </h3>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="age"> Age :</label>
-                                        <input type="text" id="age" name="age" value="{{ form.age.value }}" readonly>
-                                        <h3>
-                                            <div class="error-message" id="age_error"></div>
-                                        </h3>
-                                    </div>
+                            <div class="form-group">
+                                <label for="age"> Age :</label>
+                                <input type="text" id="age" name="age" value="{{ form.age.value }}" readonly>
+                                <h3>
+                                    <div class="error-message" id="age_error"></div>
+                                </h3>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label for="bill_status">Gender :</label>
-                                        <div class="status">
-                                            <select id="gender" name="gender">
+                            <div class="form-group">
+                                <label for="bill_status">Gender :</label>
+                                <div class="status">
+                                    <select id="gender" name="gender">
                                                 <li><option  value="Male" {% if form.gender.value == 'Male' %}selected{% endif %}>Male</option></li>
                                                 <li><option value="Female" {% if form.gender.value == 'Female' %}selected{% endif %}>Female</option></li>
                                                 <li><option value="Other" {% if form.gender.value == 'Other' %}selected{% endif %}>Other</option></li>
                                             </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="product_name">Bio :</label>
-                                        <input type="text" id="bio" name="bio" value="{{ form.bio.value }}" placeholder="Enter Product Name" required>
-                                        <h3>
-                                            <div class="error-message" id="product_error"></div>
-                                        </h3>
-                                    </div>
-
                                 </div>
+                            </div>
 
-                                <div class="close">
-                                    <button type="submit">Save Changes</button>
-                                    <button type="button" onclick="window.location.href='{% url 'profile' %}'">Close</button>
-                                </div>
-                            </form>
+                            <div class="form-group">
+                                <label for="product_name">Bio :</label>
+                                <input type="text" id="bio" name="bio" value="{{ form.bio.value }}" placeholder="Enter Product Name" required>
+                                <h3>
+                                    <div class="error-message" id="product_error"></div>
+                                </h3>
+                            </div>
+
                         </div>
 
-                        <h1 id="alert-message"></h1>
-
-                    </div>
-
-                    <!--  =======================================  Generate Bill End  =======================================  -->
-
+                        <div class="close">
+                            <button type="submit">Save Changes</button>
+                            <button type="button" onclick="window.location.href='{% url 'profile' %}'">Close</button>
+                        </div>
+                    </form>
                 </div>
-            </div>
 
-        </section>
-
-        <!--  ======================================= Home End  =======================================  -->
-
-        <!--  ======================================= Footer Start  =======================================  -->
-
-        <footer>
-
-            <div class="footer">
+                <h1 id="alert-message"></h1>
 
             </div>
 
-        </footer>
+            <!--  =======================================  Edit Profile End  =======================================  -->
 
-        <!--  ======================================= Footer End  =======================================  -->
+        </div>
+    </div>
 
-    </section>
+</section>
 
-    <script src="{% static 'JS/Script.js' %}"></script>
+<!--  ======================================= Script Start  =======================================  -->
 
-    <script>
-        function speakMessage(message) {
-            const msg = new SpeechSynthesisUtterance(message);
-            // Optionally, you can set the voice to a female voice if available
-            const voices = window.speechSynthesis.getVoices();
-            const femaleVoice = voices.find(voice => voice.name.includes('Female')) || voices[0];
-            msg.voice = femaleVoice;
-            window.speechSynthesis.speak(msg);
-        }
+<script src="{% static 'JS/Script.js' %}"></script>
 
-        function validateNumber(field) {
-            const errorElement = document.getElementById(field.id + '_error');
-            const value = field.value.trim();
+<script>
+    function speakMessage(message) {
+        const msg = new SpeechSynthesisUtterance(message);
+        // Optionally, you can set the voice to a female voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const femaleVoice = voices.find(voice => voice.name.includes('Female')) || voices[0];
+        msg.voice = femaleVoice;
+        window.speechSynthesis.speak(msg);
+    }
 
-            if (/[^0-9]/.test(field.value)) {
-                errorElement.textContent = "Only Numbers Are Allowed...";
-                errorElement.style.display = 'block';
-            } else if (field.id === 'quantity' || field.id === 'price') {
-                // For quantity and price, check for 0
-                if (value == 0 || value === '') {
-                    errorElement.textContent = "0 Or Blank Space are not allowed.";
-                    errorElement.style.display = 'block';
-                } else {
-                    errorElement.style.display = 'none';
-                }
-            } else {
-                errorElement.style.display = 'none';
-            }
-        }
+    function validateNumber(field) {
+        const errorElement = document.getElementById(field.id + '_error');
+        const value = field.value.trim();
 
-        function validateCharacterWithSpaces(field) {
-            const errorElement = document.getElementById(field.id + '_error');
-            if (/[^a-zA-Z\s]/.test(field.value)) {
-                errorElement.textContent = "Only Characters Are Allow...";
+        if (/[^0-9]/.test(field.value)) {
+            errorElement.textContent = "Only Numbers Are Allowed...";
+            errorElement.style.display = 'block';
+        } else if (field.id === 'quantity' || field.id === 'price') {
+            // For quantity and price, check for 0
+            if (value == 0 || value === '') {
+                errorElement.textContent = "0 Or Blank Space are not allowed.";
                 errorElement.style.display = 'block';
             } else {
                 errorElement.style.display = 'none';
             }
+        } else {
+            errorElement.style.display = 'none';
+        }
+    }
+
+    function validateCharacterWithSpaces(field) {
+        const errorElement = document.getElementById(field.id + '_error');
+        if (/[^a-zA-Z\s]/.test(field.value)) {
+            errorElement.textContent = "Only Characters Are Allow...";
+            errorElement.style.display = 'block';
+        } else {
+            errorElement.style.display = 'none';
+        }
+    }
+
+    function validateProduct(field) {
+        const errorElement = document.getElementById(field.id + '_error');
+        errorElement.style.display = 'none'; // All values are allowed for product name
+    }
+
+    function updateFlag(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const flagUrl = selectedOption.getAttribute('data-flag');
+        document.getElementById('country_flag').src = flagUrl;
+    }
+
+    function validatePhoneNumber(field) {
+        const errorElement = document.getElementById(field.id + '_error');
+        const countryCode = document.getElementById('country_code').value;
+        let regex;
+
+        if (countryCode === '+91') {
+            regex = /^[0-9]{10}$/;
+        } else if (countryCode === '+1') {
+            regex = /^[0-9]{10}$/;
+        } else if (countryCode === '+100') {
+            regex = /^[0-9]{7,10}$/; // Example for custom country
         }
 
-        function validateProduct(field) {
-            const errorElement = document.getElementById(field.id + '_error');
-            errorElement.style.display = 'none'; // All values are allowed for product name
+        if (!regex.test(field.value)) {
+            errorElement.textContent = "Invalid Phone Number For The Selected Country...";
+            errorElement.style.display = 'block';
+        } else {
+            errorElement.style.display = 'none';
         }
+    }
 
-        function updateFlag(selectElement) {
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-            const flagUrl = selectedOption.getAttribute('data-flag');
-            document.getElementById('country_flag').src = flagUrl;
+    function validateEmail(field) {
+        const errorElement = document.getElementById(field.id + '_error');
+        const email = field.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Validate the email address using regex
+        if (!emailRegex.test(email)) {
+            errorElement.textContent = "Invalid Email Address.";
+            errorElement.style.display = 'block';
+        } else {
+            errorElement.style.display = 'none';
         }
+    }
 
-        function validatePhoneNumber(field) {
-            const errorElement = document.getElementById(field.id + '_error');
-            const countryCode = document.getElementById('country_code').value;
-            let regex;
 
-            if (countryCode === '+91') {
-                regex = /^[0-9]{10}$/;
-            } else if (countryCode === '+1') {
-                regex = /^[0-9]{10}$/;
-            } else if (countryCode === '+100') {
-                regex = /^[0-9]{7,10}$/; // Example for custom country
-            }
+    function validateForm() {
+        const fields = ['customer_name', 'customer_number', 'customer_address', 'email', 'age', 'date_of_birth', 'gender'];
+        let valid = true;
 
-            if (!regex.test(field.value)) {
-                errorElement.textContent = "Invalid Phone Number For The Selected Country...";
+        fields.forEach(function(field) {
+            const element = document.getElementById(field);
+            const errorElement = document.getElementById(field + '_error');
+
+            if (element.value.trim() === "") {
+                errorElement.textContent = "Blank Space is Not Allowed...";
                 errorElement.style.display = 'block';
+                valid = false;
+            } else if (errorElement.style.display === 'block') {
+                valid = false;
             } else {
                 errorElement.style.display = 'none';
             }
+        });
+
+        if (valid) {
+            //alert("Form submitted successfully!");
+            speakMessage("Bill Generated Successfully! Thank You...")
+                // Optionally, submit the form data here.
+        } else {
+            //alert("Please correct the errors and try again.");
+            speakMessage("Please Correct The Errors And Try Again.")
         }
+    }
 
-        function validateEmail(field) {
-            const errorElement = document.getElementById(field.id + '_error');
-            const email = field.value;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    function calculateAge() {
+        const dobElement = document.getElementById('date_of_birth');
+        const ageElement = document.getElementById('age');
 
-            // Validate the email address using regex
-            if (!emailRegex.test(email)) {
-                errorElement.textContent = "Invalid Email Address.";
-                errorElement.style.display = 'block';
-            } else {
-                errorElement.style.display = 'none';
+        const dobValue = dobElement.value;
+        if (dobValue) {
+            const dob = new Date(dobValue);
+            const today = new Date();
+
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDifference = today.getMonth() - dob.getMonth();
+            const dayDifference = today.getDate() - dob.getDate();
+
+            // Adjust age if the current date is before the birthday in the current year
+            if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                age--;
             }
+
+            ageElement.value = age;
+        } else {
+            ageElement.value = '';
         }
+    }
 
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show';
+        setTimeout(() => {
+            toast.className = toast.className.replace('show', '');
+        }, 3000);
+    }
+</script>
 
-        function validateForm() {
-            const fields = ['customer_name', 'customer_number', 'customer_address', 'email', 'age', 'date_of_birth', 'gender'];
-            let valid = true;
+<!--  ======================================= Script End  =======================================  -->
 
-            fields.forEach(function(field) {
-                const element = document.getElementById(field);
-                const errorElement = document.getElementById(field + '_error');
-
-                if (element.value.trim() === "") {
-                    errorElement.textContent = "Blank Space is Not Allowed...";
-                    errorElement.style.display = 'block';
-                    valid = false;
-                } else if (errorElement.style.display === 'block') {
-                    valid = false;
-                } else {
-                    errorElement.style.display = 'none';
-                }
-            });
-
-            if (valid) {
-                //alert("Form submitted successfully!");
-                speakMessage("Bill Generated Successfully! Thank You...")
-                    // Optionally, submit the form data here.
-            } else {
-                //alert("Please correct the errors and try again.");
-                speakMessage("Please Correct The Errors And Try Again.")
-            }
-        }
-
-        function calculateAge() {
-            const dobElement = document.getElementById('date_of_birth');
-            const ageElement = document.getElementById('age');
-
-            const dobValue = dobElement.value;
-            if (dobValue) {
-                const dob = new Date(dobValue);
-                const today = new Date();
-
-                let age = today.getFullYear() - dob.getFullYear();
-                const monthDifference = today.getMonth() - dob.getMonth();
-                const dayDifference = today.getDate() - dob.getDate();
-
-                // Adjust age if the current date is before the birthday in the current year
-                if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
-                    age--;
-                }
-
-                ageElement.value = age;
-            } else {
-                ageElement.value = '';
-            }
-        }
-
-        /*function submitForm() {
-            var billNumber = document.getElementById('bill_number').value;
-            var customerName = document.getElementById('customer_name').value;
-            var customerNumber = document.getElementById('customer_number').value;
-            var product = document.getElementById('product').value;
-            var quantity = document.getElementById('quantity').value;
-            var price = document.getElementById('price').value;
-
-            var valid = true;
-
-            valid &= validateField('bill_number', billNumber, true, false);
-            valid &= validateField('customer_name', customerName, false, true);
-            valid &= validateField('customer_number', customerNumber, true, false);
-            valid &= validateField('product', product, false, true);
-            valid &= validateField('quantity', quantity, true, false);
-            valid &= validateField('price', price, true, false);
-
-            if (valid) {
-                calculate();
-                var speech = new SpeechSynthesisUtterance("Bill Generated Successfully..., Thank You.");
-                window.speechSynthesis.speak(speech);
-                alert("Bill Generated Successfully..., Thank You.");
-            }
-        }*/
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show';
-            setTimeout(() => {
-                toast.className = toast.className.replace('show', '');
-            }, 3000);
-        }
-    </script>
-
-</body>
-
-<!--  ======================================================  Body End  ======================================================  -->
-
-</html>
+{% endblock %}
